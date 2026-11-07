@@ -1,0 +1,1 @@
+Crumbs & Candy is a 3D escape adventure inspired by Hansel and Gretel, combining card-based combat, exploration, and resource management. Players escape the Witch’s house, survive a dangerous forest, and navigate branching paths to reach freedom.

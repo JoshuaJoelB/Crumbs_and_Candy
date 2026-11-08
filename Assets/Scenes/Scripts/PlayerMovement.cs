@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,33 +8,39 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float gravity = -9.81f;
 
-    [Header("Mouse Rotation")]
-    [SerializeField] private float mouseSensitivity = 150f;
+    [Header("Player Rotation")]
+    [SerializeField] private float rotationSpeed = 180f;
 
     private CharacterController controller;
     private float verticalVelocity;
-    private float rotationY;
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        rotationY = transform.eulerAngles.y;
     }
 
     private void Update()
     {
-        HandleMouseRotation();
+        HandleRotation();
         HandleMovement();
     }
 
-    private void HandleMouseRotation()
+    private void HandleRotation()
     {
-        if (Mouse.current == null)
+        if (Keyboard.current == null)
             return;
 
-        float mouseX = Mouse.current.delta.x.ReadValue();
-        rotationY += mouseX * mouseSensitivity * Time.deltaTime;
-        transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
+        float rotationInput = 0f;
+
+        if (Keyboard.current.leftArrowKey.isPressed)
+            rotationInput = -1f;
+
+        if (Keyboard.current.rightArrowKey.isPressed)
+            rotationInput = 1f;
+
+        float rotationAmount = rotationInput * rotationSpeed * Time.deltaTime;
+
+        transform.Rotate(0f, rotationAmount, 0f);
     }
 
     private void HandleMovement()

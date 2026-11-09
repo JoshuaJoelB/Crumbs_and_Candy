@@ -11,7 +11,7 @@ public static class CardDatabase
         Add(new CardData("StaminaCardCard003", "Stamina Card", "Restore 2 Stamina.", 0, CardEffectType.RestoreStamina, 2));
         Add(new CardData("GuardCard004", "Guard", "Gain 5 armor vs the next enemy attack.", 1, CardEffectType.Armor, 5));
         Add(new CardData("FireSpellCard005", "Fire Spell", "Deal 8 damage.", 2, CardEffectType.Damage, 8));
-        Add(new CardData("ArcaneShieldCard006", "Arcane Shield", "Block up to 4 damage from the next attack.", 1, CardEffectType.Shield, 4));
+       Add(new CardData("ArcaneShieldCard006", "Arcane Shield", "Block up to 4 damage from the next attack.", 1, CardEffectType.Armor, 4));
         Add(new CardData("FrostBindCard007", "Frost Bind", "Enemy's next attack is reduced by 3 (min 0).", 1, CardEffectType.Frost, 3));
     }
 

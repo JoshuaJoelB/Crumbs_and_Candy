@@ -1,4 +1,4 @@
-public enum CardEffectType { Damage, RestoreStamina, Armor, Shield, Frost }
+public enum CardEffectType { Damage, RestoreStamina, Armor, Frost }
 
 [System.Serializable]
 public class CardData

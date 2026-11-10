@@ -155,7 +155,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
   gravity: -9.81
+  rotationSpeed: 180
   mouseSensitivity: 150
+  rotationSmoothTime: 0.08
 --- !u!1 &7089108015343504852
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,11 +9,14 @@ combining card-based combat, exploration, and resource management.
 
 ### Navigation: 
 
-- Witch house
-- Forest
-- Shop
-- Blacksmith
-- Final Boss
+- [1] Witch house
+- [2] Enemy Location 1
+- [3] Blacksmith
+- [4] Enemy Location 2
+- [5] Shop
+- [6] > Enemy Location [3, 4]
+- [7] Campfire
+- [8] Final Boss
 - EXIT
 
 ## Third-Party package: 

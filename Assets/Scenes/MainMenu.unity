@@ -1564,8 +1564,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.5132, y: 86.4408}
-  m_SizeDelta: {x: 636.1032, y: 116.8251}
+  m_AnchoredPosition: {x: 17, y: 46}
+  m_SizeDelta: {x: 586.2413, y: 81.4248}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1140170308
 MonoBehaviour:
@@ -2331,8 +2331,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.5132, y: -296}
-  m_SizeDelta: {x: 636.1032, y: 116.8251}
+  m_AnchoredPosition: {x: 16.999985, y: -220.5538}
+  m_SizeDelta: {x: 586.2413, y: 81.4248}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1579642468
 MonoBehaviour:
@@ -2464,8 +2464,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.5132, y: -99}
-  m_SizeDelta: {x: 636.1032, y: 116.8251}
+  m_AnchoredPosition: {x: 16.999985, y: -83.2487}
+  m_SizeDelta: {x: 586.2413, y: 81.4248}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1682028018
 MonoBehaviour:
@@ -2732,7 +2732,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -237, y: 255}
+  m_AnchoredPosition: {x: -332, y: 222}
   m_SizeDelta: {x: 682.1427, y: 264.3958}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1731751499
@@ -2782,8 +2782,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
-  m_fontSizeBase: 90
+  m_fontSize: 110
+  m_fontSizeBase: 110
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2821,7 +2821,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -501.83276, w: 137.16162}
+  m_margin: {x: 0, y: 0, z: -683.7595, w: 137.16162}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

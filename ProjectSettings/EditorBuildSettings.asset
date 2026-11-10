@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 9ac405e3931e2c84681229d50e6b2d02
   - enabled: 1
-    path: Assets/Scenes/InsideHouse.unity
+    path: Assets/Scenes/WitchHouse.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/EL1.unity
-    guid: 5bb88ba51d1dd4143b7dbefea550b296
+    path: Assets/Scenes/EL-One.unity
+    guid: c35ad2f3c5e770e4da9f66431c62d816
   - enabled: 1
     path: Assets/Scenes/Forest.unity
     guid: eaba27fa3d19c3a44aa1cccfa8e2cef3

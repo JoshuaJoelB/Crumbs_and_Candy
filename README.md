@@ -11,12 +11,12 @@ combining card-based combat, exploration, and resource management.
 
 - [1] Witch house
 - [2] Enemy Location 1
-- Blacksmith
-- Enemy Location 2
-- Shop
-- > Enemy Location 3 n 4
-- Campfire
-- Final Boss
+- [3] Blacksmith
+- [4] Enemy Location 2
+- [5] Shop
+- [6] > Enemy Location [3, 4]
+- [7] Campfire
+- [8] Final Boss
 - EXIT
 
 ## Third-Party package: 

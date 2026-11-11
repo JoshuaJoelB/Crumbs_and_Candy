@@ -9,8 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = -9.81f;
 
     [Header("Player Rotation")]
-    [SerializeField] private float rotationSpeed = 180f;
-    [SerializeField] private float mouseSensitivity = 0.5f;
+    [SerializeField] private float rotationSpeed = 30f;
+    [SerializeField] private float mouseSensitivity = 0.25f;
     [SerializeField] private float rotationSmoothTime = 0.08f;
 
     private CharacterController controller;

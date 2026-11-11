@@ -29,5 +29,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Blacksmith.unity
     guid: 51daca612da6a214abd2998dd39e01d0
+  - enabled: 1
+    path: Assets/Scenes/Doll.unity
+    guid: 366f1d82a41a96f43aa04cdeffc02ae2
+  - enabled: 1
+    path: Assets/Scenes/WITCH.unity
+    guid: 99b16688dcc0b1c42b0e74e96b193000
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

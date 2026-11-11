@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 9023101909957086078}
     - target: {fileID: 8444142026700411289, guid: 1f8ba9f00b4a49045a389a68618e48e5, type: 3}
       propertyPath: enemyId
-      value: IronHuntsmanEnemy005
+      value: WitchEnemy005
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

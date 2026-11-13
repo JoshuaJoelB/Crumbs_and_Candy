@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_WillOWisp
       objectReference: {fileID: 0}
+    - target: {fileID: 4631266678869294001, guid: ef6551e2896ad774f8dcd34bb90d11b1, type: 3}
+      propertyPath: enemyId
+      value: WillOWispEnemy002
+      objectReference: {fileID: 0}
     - target: {fileID: 6798083795369238214, guid: ef6551e2896ad774f8dcd34bb90d11b1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.04
@@ -190,7 +194,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4485851924795866356, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.7
+      value: -2.34
       objectReference: {fileID: 0}
     - target: {fileID: 4485851924795866356, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
       propertyPath: m_LocalPosition.y
@@ -415,7 +419,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368768422}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.041845836, y: 0.9306449, z: -0.1126778, w: 0.34561923}
+  m_LocalRotation: {x: 0.042442214, y: 0.92561257, z: -0.10915679, w: 0.3598956}
   m_LocalPosition: {x: -8.385, y: 1.720406, z: 0.05833149}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -994,7 +998,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026840829}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.04184582, y: 0.9306449, z: -0.11267777, w: 0.34561923}
+  m_LocalRotation: {x: 0.042442244, y: 0.9256125, z: -0.1091568, w: 0.3598957}
   m_LocalPosition: {x: -8.385, y: 1.720406, z: 0.05833149}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

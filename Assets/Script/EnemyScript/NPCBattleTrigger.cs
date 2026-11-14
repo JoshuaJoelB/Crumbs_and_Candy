@@ -25,13 +25,31 @@ public class NPCBattleTrigger : MonoBehaviour
     {
         battleLoading = false;
 
+        // DEBUG
+        string sceneName = SceneManager.GetActiveScene().name;
+        Debug.Log($"[Trigger] '{name}' started in scene '{sceneName}' " +
+                  $"key='{Key()}' " +
+                  $"alreadyDefeated={BattleTransfer.defeated.Contains(Key())} " +
+                  $"enemyId='{enemyId}' " +
+                  $"battleSceneName='{battleSceneName}' " +
+                  $"triggerDistance={triggerDistance} " +
+                  $"center={(center != null ? center.name : "NULL (using transform.position)")}");
+
         if (BattleTransfer.defeated.Contains(Key()))
         {
+            Debug.Log($"[Trigger] '{name}' DISABLED — this enemy was already defeated (key exists in BattleTransfer.defeated).");
             gameObject.SetActive(false);
             return;
         }
 
         FindPlayer();
+
+        if (player == null)
+            Debug.LogWarning($"[Trigger] '{name}' — NO PLAYER FOUND in scene '{sceneName}' " +
+                             $"(tried tag 'Player'). Check that your player object is tagged 'Player' and is active.");
+        else
+            Debug.Log($"[Trigger] '{name}' — player found: '{player.name}' at {player.position}, " +
+                      $"distance to origin = {Vector3.Distance(Flatten(player.position), Flatten(Origin())):F2}");
     }
 
     void FindPlayer()
@@ -49,6 +67,11 @@ public class NPCBattleTrigger : MonoBehaviour
         diff.y = 0;
         if (diff.magnitude > triggerDistance) return;
 
+        // DEBUG 
+        Debug.Log($"[Trigger] '{name}' FIRING! distance={diff.magnitude:F2} " +
+                  $"enemyId='{enemyId}' battleScene='{battleSceneName}' " +
+                  $"returning to scene='{SceneManager.GetActiveScene().name}'");
+
         battleLoading = true;
 
         Vector3 dir = diff.sqrMagnitude > 0.001f ? diff.normalized : -transform.forward;
@@ -63,6 +86,9 @@ public class NPCBattleTrigger : MonoBehaviour
 
         SceneManager.LoadScene(battleSceneName);
     }
+
+    // Helper lang para sa debug log
+    Vector3 Flatten(Vector3 v) { v.y = 0; return v; }
 
     void OnDrawGizmosSelected()
     {

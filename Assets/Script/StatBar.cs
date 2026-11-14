@@ -10,7 +10,7 @@ public class StatBar : MonoBehaviour
 
     public void Set(int value, int max)
     {
-        slider.wholeNumbers = true;     // int lang, walang decimal
+        slider.wholeNumbers = true;    
         slider.minValue = 0;
         slider.maxValue = max;
         slider.value = value;

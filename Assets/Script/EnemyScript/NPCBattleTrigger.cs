@@ -5,12 +5,12 @@ public class NPCBattleTrigger : MonoBehaviour
 {
     public string enemyId = "ScarecrowEnemy001";
     public string battleSceneName = "BattleScene";
-    public float triggerDistance = 2f;    // gaano kalapit bago magsimula ang laban (mga 3 feet)
-    public float returnDistance = 5f;     // gaano kalayo ibabalik ang player pagkatapos ng laban
-    public Transform center;              // i-drag dito ang Visual (capsule) para nasa katawan ang bilog
+    public float triggerDistance = 2f;    
+    public float returnDistance = 5f;     
+    public Transform center;              
 
     Transform player;
-    static bool battleLoading;            // iisa para sa lahat ng enemy
+    static bool battleLoading;            
 
     Vector3 Origin() { return center != null ? center.position : transform.position; }
 
@@ -24,6 +24,13 @@ public class NPCBattleTrigger : MonoBehaviour
     void Start()
     {
         battleLoading = false;
+
+        // Disable this trigger if we are already in the battle scene
+        if (SceneManager.GetActiveScene().name == battleSceneName)
+        {
+            enabled = false;
+            return;
+        }
 
         if (BattleTransfer.defeated.Contains(Key()))
         {

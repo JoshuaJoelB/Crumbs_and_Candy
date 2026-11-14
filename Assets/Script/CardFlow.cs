@@ -9,8 +9,8 @@ public class CardFlow
 
     public void StartBattle(List<string> acquiredIds, int openingDraw)
     {
-        deck.Clear(); hand.Clear(); discard.Clear();           // wipe old test data
-        foreach (string id in acquiredIds)                      // acquired list is NOT changed
+        deck.Clear(); hand.Clear(); discard.Clear();           
+        foreach (string id in acquiredIds)                      
             deck.Add(new CardInstance(CardDatabase.Get(id)));
         Shuffle(deck);
         Draw(openingDraw);
@@ -22,7 +22,7 @@ public class CardFlow
         {
             if (deck.Count == 0)
             {
-                if (discard.Count == 0) return;                 // nothing left: stop
+                if (discard.Count == 0) return;                 
                 deck.AddRange(discard); discard.Clear(); Shuffle(deck);
             }
             CardInstance top = deck[deck.Count - 1];
@@ -33,7 +33,7 @@ public class CardFlow
 
     public bool Discard(CardInstance card)
     {
-        if (!hand.Remove(card)) return false;                   // blocks double-discard
+        if (!hand.Remove(card)) return false;                   
         discard.Add(card);
         return true;
     }

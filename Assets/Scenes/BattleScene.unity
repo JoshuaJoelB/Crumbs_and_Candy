@@ -924,12 +924,12 @@ MonoBehaviour:
   battlePanel: {fileID: 703397558}
   handContainer: {fileID: 642652596}
   cardPrefab: {fileID: 4820339745038497683, guid: a0b8e32bf8a4eb04e81b0ba42a6525bf, type: 3}
-  playerStatsText: {fileID: 385194511}
-  enemyStatsText: {fileID: 735876823}
   deckCountText: {fileID: 1181627290}
   discardCountText: {fileID: 280703935}
   resultText: {fileID: 597588660}
   endTurnButton: {fileID: 507800080}
+  playerStatsTextUI: {fileID: 0}
+  enemyStatsTextUI: {fileID: 0}
   playerHpBar: {fileID: 147168071}
   playerManaBar: {fileID: 1410058778}
   enemyHpBar: {fileID: 1477947968}
@@ -3109,6 +3109,121 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1783057005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1783057007}
+  - component: {fileID: 1783057006}
+  m_Layer: 0
+  m_Name: GameStatsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1783057006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783057005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d146c9b08d708a642983e8352496acf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameStatsManager
+  playerStats:
+    id: Players
+    displayName: Harold
+    difficulty: 
+    level: 1
+    maxHp: 100
+    hp: 100
+    maxStamina: 5
+    stamina: 5
+    armor: 0
+    attackReduction: 0
+    xp: 0
+    xpToNext: 50
+    coins: 0
+    xpReward: 0
+    coinReward: 0
+  handCards: 3
+  drawCards: 0
+  discardCards: 0
+  playerHpBar: {fileID: 147168071}
+  playerManaBar: {fileID: 1410058778}
+  enemyHpBar: {fileID: 1477947968}
+  enemyManaBar: {fileID: 1931236146}
+  playerStatsText: {fileID: 385194511}
+  enemyStatsText: {fileID: 735876823}
+  onPlayerDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 435448381}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: EndBattle
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onPlayerLevelUp:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 435448381}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: Refresh
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  activeEnemy:
+    id: 
+    displayName: 
+    difficulty: 
+    level: 1
+    maxHp: 100
+    hp: 100
+    maxStamina: 5
+    stamina: 5
+    armor: 0
+    attackReduction: 0
+    xp: 0
+    xpToNext: 50
+    coins: 0
+    xpReward: 0
+    coinReward: 0
+--- !u!4 &1783057007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783057005}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 85.85002, y: 0.00001, z: 778.2236}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1924632870
 GameObject:
   m_ObjectHideFlags: 0
@@ -3735,3 +3850,4 @@ SceneRoots:
   - {fileID: 1260048869}
   - {fileID: 1990241389}
   - {fileID: 2028472617}
+  - {fileID: 1783057007}

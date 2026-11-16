@@ -13,9 +13,12 @@ public class CardUI : MonoBehaviour
     {
         instance = card;
         nameText.text = card.data.cardName;
-        descText.text = card.data.description;
+        descText.text = card.GetDescription();
         costText.text = card.data.cost.ToString();
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => onClick(instance));
+
+        if (card.data.effect == CardEffectType.Junk)
+            nameText.color = Color.gray;
     }
 }

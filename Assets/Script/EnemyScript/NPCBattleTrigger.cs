@@ -5,12 +5,17 @@ public class NPCBattleTrigger : MonoBehaviour
 {
     public string enemyId = "ScarecrowEnemy001";
     public string battleSceneName = "BattleScene";
-    public float triggerDistance = 2f;    // gaano kalapit bago magsimula ang laban (mga 3 feet)
-    public float returnDistance = 5f;     // gaano kalayo ibabalik ang player pagkatapos ng laban
-    public Transform center;              // i-drag dito ang Visual (capsule) para nasa katawan ang bilog
+    public float triggerDistance = 2f;
+    public float returnDistance = 5f;
+    public Transform center;
 
     Transform player;
-    static bool battleLoading;            // iisa para sa lahat ng enemy
+    static bool battleLoading;
+
+    public static void ResetBattleLoading()
+    {
+        battleLoading = false;
+    }
 
     Vector3 Origin() { return center != null ? center.position : transform.position; }
 
@@ -25,37 +30,34 @@ public class NPCBattleTrigger : MonoBehaviour
     {
         battleLoading = false;
 
-        // DEBUG
-        string sceneName = SceneManager.GetActiveScene().name;
-        Debug.Log($"[Trigger] '{name}' started in scene '{sceneName}' " +
-                  $"key='{Key()}' " +
-                  $"alreadyDefeated={BattleTransfer.defeated.Contains(Key())} " +
-                  $"enemyId='{enemyId}' " +
-                  $"battleSceneName='{battleSceneName}' " +
-                  $"triggerDistance={triggerDistance} " +
-                  $"center={(center != null ? center.name : "NULL (using transform.position)")}");
-
         if (BattleTransfer.defeated.Contains(Key()))
         {
-            Debug.Log($"[Trigger] '{name}' DISABLED — this enemy was already defeated (key exists in BattleTransfer.defeated).");
+            Debug.Log($"[Trigger] {name} was already defeated. Disabling.");
             gameObject.SetActive(false);
             return;
         }
 
         FindPlayer();
-
-        if (player == null)
-            Debug.LogWarning($"[Trigger] '{name}' — NO PLAYER FOUND in scene '{sceneName}' " +
-                             $"(tried tag 'Player'). Check that your player object is tagged 'Player' and is active.");
-        else
-            Debug.Log($"[Trigger] '{name}' — player found: '{player.name}' at {player.position}, " +
-                      $"distance to origin = {Vector3.Distance(Flatten(player.position), Flatten(Origin())):F2}");
+        Debug.Log($"[Trigger] {name} started. Player found: {(player != null ? player.name : "NULL")}");
     }
 
     void FindPlayer()
     {
+        // Hanapin lang ang player kung may tag na "Player" at active
         GameObject p = GameObject.FindWithTag("Player");
-        if (p != null) player = p.transform;
+        if (p != null && p.activeInHierarchy)
+        {
+            player = p.transform;
+            return;
+        }
+
+        // Fallback: hanapin sa pamamagitan ng pangalan kung sakaling magulo ang tag
+        p = GameObject.Find("player_entityy");
+        if (p != null && p.activeInHierarchy)
+        {
+            player = p.transform;
+            Debug.LogWarning($"[Trigger] Player found by name fallback: {p.name}. Ayusin ang tag.");
+        }
     }
 
     void Update()
@@ -67,11 +69,14 @@ public class NPCBattleTrigger : MonoBehaviour
         diff.y = 0;
         if (diff.magnitude > triggerDistance) return;
 
-        // DEBUG 
-        Debug.Log($"[Trigger] '{name}' FIRING! distance={diff.magnitude:F2} " +
-                  $"enemyId='{enemyId}' battleScene='{battleSceneName}' " +
-                  $"returning to scene='{SceneManager.GetActiveScene().name}'");
+        // I-double check kung defeated na talaga (para sa mga nag-reload)
+        if (BattleTransfer.defeated.Contains(Key()))
+        {
+            gameObject.SetActive(false);
+            return;
+        }
 
+        Debug.Log($"[Trigger] FIRING from {name}!");
         battleLoading = true;
 
         Vector3 dir = diff.sqrMagnitude > 0.001f ? diff.normalized : -transform.forward;
@@ -86,9 +91,6 @@ public class NPCBattleTrigger : MonoBehaviour
 
         SceneManager.LoadScene(battleSceneName);
     }
-
-    // Helper lang para sa debug log
-    Vector3 Flatten(Vector3 v) { v.y = 0; return v; }
 
     void OnDrawGizmosSelected()
     {

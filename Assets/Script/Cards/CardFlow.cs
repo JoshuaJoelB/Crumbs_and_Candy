@@ -5,13 +5,15 @@ public class CardFlow
     public List<CardInstance> deck    = new List<CardInstance>();
     public List<CardInstance> hand    = new List<CardInstance>();
     public List<CardInstance> discard = new List<CardInstance>();
+    
+    public int maxHandSize = 5; // LIMITADOR DITO
     static System.Random rng = new System.Random();
 
-    public void StartBattle(List<string> acquiredIds, int openingDraw)
+    public void StartBattleWithInstances(List<CardInstance> cards, int openingDraw)
     {
         deck.Clear(); hand.Clear(); discard.Clear();
-        foreach (string id in acquiredIds)
-            deck.Add(new CardInstance(CardDatabase.Get(id)));
+        foreach (CardInstance c in cards)
+            deck.Add(c);
         Shuffle(deck);
         Draw(openingDraw);
     }
@@ -20,6 +22,8 @@ public class CardFlow
     {
         for (int i = 0; i < count; i++)
         {
+            if (hand.Count >= maxHandSize) return; // Tigil kung 5 na
+
             if (deck.Count == 0)
             {
                 if (discard.Count == 0) return;

@@ -21,9 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/ExplorationScene.unity
     guid: 9562a529c682cee449c6472c6ba45a7f
   - enabled: 1
-    path: Assets/Scenes/BattleScene.unity
-    guid: 8f3a7c575320a1947b6b262f3b236652
-  - enabled: 1
     path: Assets/Scenes/Shop.unity
     guid: 1d9f38ae48a03e64096730159d8ca939
   - enabled: 1
@@ -35,5 +32,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WITCH.unity
     guid: 99b16688dcc0b1c42b0e74e96b193000
+  - enabled: 1
+    path: Assets/Scenes/BattleScene.unity
+    guid: 8f3a7c575320a1947b6b262f3b236652
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

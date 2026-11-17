@@ -3,8 +3,12 @@ using UnityEngine;
 public class Combatant
 {
     public string name;
-    public int maxHp, hp, maxStamina, stamina;   // stamina = mana
+    public int maxHp, hp, maxStamina, stamina;
     public int armor, attackReduction;
+
+    public bool parryBlock;
+    public bool counterIncoming;
+    public int  junkToAdd;
 
     public Combatant(string name, int maxHp, int maxStamina, int startStamina)
     {
@@ -14,7 +18,6 @@ public class Combatant
         stamina = startStamina;
     }
 
-    // Damage ay dadaan muna sa armor, ang matitira ang tatama sa HP.
     public void TakeDamage(int amount)
     {
         int absorbed = Mathf.Min(amount, armor);
@@ -22,12 +25,21 @@ public class Combatant
         hp = Mathf.Max(0, hp - (amount - absorbed));
     }
 
+    public void TakeDirectDamage(int amount)
+    {
+        hp = Mathf.Max(0, hp - amount);
+    }
+
     public void RestoreStamina(int amount)
     {
         stamina = Mathf.Min(maxStamina, stamina + amount);
     }
 
-    // Frost Bind: binabawasan ang susunod na attack, hindi bababa sa 0.
+    public void Heal(int amount)
+    {
+        hp = Mathf.Min(maxHp, hp + amount);
+    }
+
     public int ResolveOutgoingAttack(int rawDamage)
     {
         int result = Mathf.Max(0, rawDamage - attackReduction);

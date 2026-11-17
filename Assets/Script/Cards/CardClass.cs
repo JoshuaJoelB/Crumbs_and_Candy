@@ -1,0 +1,10 @@
+public enum CardClass
+{
+    Basic,
+    Normal,
+    Warrior,
+    Mage,
+    Trickster,
+    Berserker,
+    Enemy
+}

@@ -1883,6 +1883,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: efa3f4b35f9696c47bd9ed3fbb5ec6c6, type: 2}
+    - target: {fileID: 2511186614058260219, guid: 883a9c794ea683543b22bda661419db1, type: 3}
+      propertyPath: triggerDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4380792269626766220, guid: 883a9c794ea683543b22bda661419db1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 180.95976

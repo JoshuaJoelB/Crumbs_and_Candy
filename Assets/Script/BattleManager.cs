@@ -15,8 +15,12 @@ public class BattleManager : MonoBehaviour
     public GameObject battlePanel;
     public Transform handContainer;
     public CardUI cardPrefab;
-    public TMP_Text playerStatsText, enemyStatsText, deckCountText, discardCountText, resultText;
+    public TMP_Text deckCountText, discardCountText, resultText;
     public Button endTurnButton;
+
+    [Header("Stats UI (Drag Correct UI Here!)")]
+    public TMP_Text playerStatsTextUI; 
+    public TMP_Text enemyStatsTextUI; 
 
     [Header("Bars")]
     public StatBar playerHpBar;
@@ -24,7 +28,6 @@ public class BattleManager : MonoBehaviour
     public StatBar enemyHpBar;
     public StatBar enemyManaBar;
 
-    Combatant player, enemy;
     EnemyData enemyData;
     CardFlow flow = new CardFlow();
     List<string> acquiredCards;
@@ -37,29 +40,67 @@ public class BattleManager : MonoBehaviour
         Instance = this;
         battlePanel.SetActive(false);
         endTurnButton.onClick.AddListener(OnEndTurnClicked);
+
+        if (GameStatsManager.Instance != null)
+        {
+            GameStatsManager.Instance.SetupUIReferences(
+                playerHpBar, playerManaBar, 
+                enemyHpBar, enemyManaBar, 
+                playerStatsTextUI, enemyStatsTextUI
+            );
+        }
     }
 
-    // Pagbukas ng BattleScene, kusang magsisimula ang laban (walang trigger button).
     void Start()
     {
         StartBattle(BattleTransfer.enemyId);
     }
 
-    // ---------- START ----------
+    void Update()
+    {
+        if (state == State.Inactive || GameStatsManager.Instance == null) return;
+
+        var gm = GameStatsManager.Instance;
+
+        deckCountText.text = "Deck: " + gm.drawCards;
+        discardCountText.text = "Discard: " + gm.discardCards;
+
+        if (handContainer.childCount != gm.handCards)
+        {
+            RefreshHandVisuals();
+        }
+    }
+
+    void RefreshHandVisuals()
+    {
+        var gm = GameStatsManager.Instance;
+        foreach (Transform child in handContainer) Destroy(child.gameObject);
+        
+        for (int i = 0; i < gm.handCards; i++)
+        {
+            CardInstance c = (i < flow.hand.Count) ? flow.hand[i] : new CardInstance(CardDatabase.Get("BasicStrikeCard001"));
+            CardUI ui = Instantiate(cardPrefab, handContainer);
+            ui.Setup(c, OnCardClicked);
+        }
+    }
+
     public bool StartBattle(string enemyId)
     {
-        if (state != State.Inactive) return false;          // walang duplicate na laban
+        if (state != State.Inactive) return false;
 
         enemyData = EnemyDatabase.Get(enemyId);
+        var gm = GameStatsManager.Instance;
 
-        // Test cards: 2 copies ng bawat card
+        gm.playerStats.ResetForBattle(fullHeal: true, startStamina: 1);
+        gm.SetupEnemy(enemyData);
+
         acquiredCards = new List<string>();
         foreach (string id in CardDatabase.AllIds()) { acquiredCards.Add(id); acquiredCards.Add(id); }
+        flow.StartBattle(acquiredCards, 3);
 
-        player = new Combatant("Player", PlayerProfile.MaxHp, 5, 3);
-        enemy = new Combatant(enemyData.enemyName, enemyData.maxHp, enemyData.maxMana, 0);
-
-        flow.StartBattle(acquiredCards, 3);                 // shuffle at draw 3, isang beses lang
+        gm.handCards = flow.hand.Count;
+        gm.drawCards = flow.deck.Count;
+        gm.discardCards = flow.discard.Count;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -71,33 +112,46 @@ public class BattleManager : MonoBehaviour
         return true;
     }
 
-    // ---------- PLAY CARD ----------
     void OnCardClicked(CardInstance card)
     {
         if (state != State.PlayerTurn) return;
         if (!flow.hand.Contains(card)) return;
-        if (player.stamina < card.data.cost) { Debug.Log("Not enough Mana"); return; }
+        
+        var gm = GameStatsManager.Instance;
+        if (gm.playerStats.stamina < card.data.cost) { Debug.Log("Not enough Mana"); return; }
 
-        player.stamina -= card.data.cost;
+        gm.playerStats.stamina -= card.data.cost;
         ApplyEffect(card.data);
         flow.Discard(card);
 
-        if (enemy.hp <= 0) { EndBattle(true); return; }
+        gm.handCards = flow.hand.Count;
+        gm.drawCards = flow.deck.Count;
+        gm.discardCards = flow.discard.Count;
+
+        if (gm.activeEnemy != null && gm.activeEnemy.hp <= 0) { EndBattle(true); return; }
         Refresh();
     }
 
     void ApplyEffect(CardData c)
     {
+        var gm = GameStatsManager.Instance;
         switch (c.effect)
         {
-            case CardEffectType.Damage:         enemy.TakeDamage(c.value); break;
-            case CardEffectType.RestoreStamina: player.RestoreStamina(c.value); break;
-            case CardEffectType.Armor:          player.armor += c.value; break;
-            case CardEffectType.Frost:          enemy.attackReduction += c.value; break;
+            case CardEffectType.Damage:         
+                gm.ApplyDamageToEnemy(c.value); 
+                break;
+            case CardEffectType.RestoreStamina: 
+                gm.RestorePlayerStamina(c.value); 
+                break;
+            case CardEffectType.Armor:          
+                gm.AddPlayerArmor(c.value); 
+                break;
+            case CardEffectType.Frost:          
+                gm.AddEnemyAttackReduction(c.value); 
+                break;
         }
     }
 
-    // ---------- TURNS ----------
     void OnEndTurnClicked()
     {
         if (state != State.PlayerTurn) return;
@@ -109,41 +163,57 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         yield return new WaitForSeconds(1f);
+        var gm = GameStatsManager.Instance;
 
-        enemy.RestoreStamina(1);                            // +1 mana bawat turn
+        if (gm.activeEnemy == null) yield break;
+
+        gm.activeEnemy.stamina = Mathf.Min(gm.activeEnemy.maxStamina, gm.activeEnemy.stamina + 1); 
+        
         int attack = enemyData.attackDamage;
-        if (enemy.stamina >= enemyData.specialCost)         // sapat ang mana: special attack
+        if (gm.activeEnemy.stamina >= enemyData.specialCost)         
         {
-            enemy.stamina -= enemyData.specialCost;
+            gm.activeEnemy.stamina -= enemyData.specialCost;
             attack += enemyData.specialBonus;
         }
 
-        int dmg = enemy.ResolveOutgoingAttack(attack);      // Frost Bind
-        player.TakeDamage(dmg);                             // dadaan sa armor ng player, tapos HP
-        player.armor = 0;                                   // armor ay para sa susunod na attack lang
+        attack = Mathf.Max(0, attack - gm.activeEnemy.attackReduction);
+        gm.activeEnemy.attackReduction = 0;
+
+        gm.ApplyDamageToPlayer(attack); 
+        gm.playerStats.armor = 0; 
+        
         Refresh();
         yield return new WaitForSeconds(0.5f);
 
-        if (player.hp <= 0) { EndBattle(false); yield break; }
+        if (gm.playerStats.hp <= 0) 
+        { 
+            EndBattle(false); 
+            yield break; 
+        }
 
-        player.RestoreStamina(1);                           // +1 mana bawat turn
-        flow.Draw(2);                                       // draw 2 bawat susunod na turn
+        gm.RestorePlayerStamina(1);
+        flow.Draw(2); 
+
+        gm.handCards = flow.hand.Count;
+        gm.drawCards = flow.deck.Count;
+        gm.discardCards = flow.discard.Count;
+        
         state = State.PlayerTurn;
         Refresh();
     }
 
-    // ---------- END ----------
-    void EndBattle(bool victory)
+    public void EndBattle(bool victory)
     {
-        if (state == State.Ended || state == State.Inactive) return;   // isang beses lang ang result
+        if (state == State.Ended || state == State.Inactive) return;
         state = State.Ended;
         lastVictory = victory;
+        var gm = GameStatsManager.Instance;
 
         if (victory)
         {
-            bool leveledUp = PlayerProfile.AddReward(enemyData.xpReward, enemyData.coinReward);
+            bool leveledUp = gm.AddReward();
             resultText.text = "VICTORY!\n+" + enemyData.xpReward + " XP   +" + enemyData.coinReward + " Coins";
-            if (leveledUp) resultText.text += "\nLEVEL UP! Level " + PlayerProfile.level;
+            if (leveledUp) resultText.text += "\nLEVEL UP! Level " + gm.playerStats.level;
         }
         else
         {
@@ -159,35 +229,27 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         if (lastVictory && !string.IsNullOrEmpty(BattleTransfer.enemyKey))
-            BattleTransfer.defeated.Add(BattleTransfer.enemyKey);      // wala na ang enemy na ito
+            BattleTransfer.defeated.Add(BattleTransfer.enemyKey);
 
+        GameStatsManager.Instance.ClearEnemy();
         state = State.Inactive;
         SceneManager.LoadScene(BattleTransfer.explorationScene);
     }
 
-    // ---------- UI ----------
-    void Refresh()
+    public void Refresh()
     {
-        foreach (Transform child in handContainer) Destroy(child.gameObject);
-        foreach (CardInstance c in flow.hand)
+        var gm = GameStatsManager.Instance;
+
+        if (playerHpBar != null)   playerHpBar.Set(gm.playerStats.hp, gm.playerStats.maxHp);
+        if (playerManaBar != null) playerManaBar.Set(gm.playerStats.stamina, gm.playerStats.maxStamina);
+        
+        if (gm.activeEnemy != null)
         {
-            CardUI ui = Instantiate(cardPrefab, handContainer);
-            ui.Setup(c, OnCardClicked);
+            if (enemyHpBar != null)    enemyHpBar.Set(gm.activeEnemy.hp, gm.activeEnemy.maxHp);
+            if (enemyManaBar != null)  enemyManaBar.Set(gm.activeEnemy.stamina, gm.activeEnemy.maxStamina);
         }
 
-        playerStatsText.text = string.Format("PLAYER  Lv {0}\nArmor {1}\nXP {2}/{3}\nCoins {4}",
-            PlayerProfile.level, player.armor, PlayerProfile.xp, PlayerProfile.XpToNext, PlayerProfile.coins);
-
-        enemyStatsText.text = string.Format("{0} ({1})\nNext attack -{2}",
-            enemyData.enemyName, enemyData.difficulty, enemy.attackReduction);
-
-        if (playerHpBar != null)   playerHpBar.Set(player.hp, player.maxHp);
-        if (playerManaBar != null) playerManaBar.Set(player.stamina, player.maxStamina);
-        if (enemyHpBar != null)    enemyHpBar.Set(enemy.hp, enemy.maxHp);
-        if (enemyManaBar != null)  enemyManaBar.Set(enemy.stamina, enemy.maxStamina);
-
-        deckCountText.text = "Deck: " + flow.deck.Count;
-        discardCountText.text = "Discard: " + flow.discard.Count;
+        gm.RefreshUI();
         endTurnButton.interactable = (state == State.PlayerTurn);
     }
 }

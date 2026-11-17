@@ -1798,7 +1798,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Press
 
-    "Enter" to Exit'
+    "SPACE" to Exit
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2142,6 +2144,10 @@ PrefabInstance:
     - target: {fileID: 3716041955239200660, guid: 0c009f543c007e24db07b108d6a52f48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5299414028146596917, guid: 0c009f543c007e24db07b108d6a52f48, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6066957811460393317, guid: 0c009f543c007e24db07b108d6a52f48, type: 3}
       propertyPath: prompt

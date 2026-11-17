@@ -5,6 +5,14 @@ public class NPCBattleTrigger : MonoBehaviour
 {
     public string enemyId = "ScarecrowEnemy001";
     public string battleSceneName = "BattleScene";
+<<<<<<< HEAD
+    public float triggerDistance = 2f;    
+    public float returnDistance = 5f;     
+    public Transform center;              
+
+    Transform player;
+    static bool battleLoading;            
+=======
     public float triggerDistance = 2f;
     public float returnDistance = 5f;
     public Transform center;
@@ -16,6 +24,7 @@ public class NPCBattleTrigger : MonoBehaviour
     {
         battleLoading = false;
     }
+>>>>>>> 96c19ab4c6152bd1848ff7cc66b07217454bb857
 
     Vector3 Origin() { return center != null ? center.position : transform.position; }
 
@@ -30,15 +39,30 @@ public class NPCBattleTrigger : MonoBehaviour
     {
         battleLoading = false;
 
+<<<<<<< HEAD
+        // Disable this trigger if we are already in the battle scene
+        if (SceneManager.GetActiveScene().name == battleSceneName)
+        {
+            enabled = false;
+            return;
+        }
+
+        if (BattleTransfer.defeated.Contains(Key()))
+        {
+=======
         if (BattleTransfer.defeated.Contains(Key()))
         {
             Debug.Log($"[Trigger] {name} was already defeated. Disabling.");
+>>>>>>> 96c19ab4c6152bd1848ff7cc66b07217454bb857
             gameObject.SetActive(false);
             return;
         }
 
         FindPlayer();
+<<<<<<< HEAD
+=======
         Debug.Log($"[Trigger] {name} started. Player found: {(player != null ? player.name : "NULL")}");
+>>>>>>> 96c19ab4c6152bd1848ff7cc66b07217454bb857
     }
 
     void FindPlayer()
@@ -69,6 +93,8 @@ public class NPCBattleTrigger : MonoBehaviour
         diff.y = 0;
         if (diff.magnitude > triggerDistance) return;
 
+<<<<<<< HEAD
+=======
         // I-double check kung defeated na talaga (para sa mga nag-reload)
         if (BattleTransfer.defeated.Contains(Key()))
         {
@@ -77,6 +103,7 @@ public class NPCBattleTrigger : MonoBehaviour
         }
 
         Debug.Log($"[Trigger] FIRING from {name}!");
+>>>>>>> 96c19ab4c6152bd1848ff7cc66b07217454bb857
         battleLoading = true;
 
         Vector3 dir = diff.sqrMagnitude > 0.001f ? diff.normalized : -transform.forward;

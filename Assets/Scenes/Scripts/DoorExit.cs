@@ -26,7 +26,7 @@ public class DoorExit : MonoBehaviour
         if (!playerNearby || isTransitioning)
             return;
 
-        if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             isTransitioning = true;
 

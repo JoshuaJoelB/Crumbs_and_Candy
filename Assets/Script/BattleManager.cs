@@ -15,8 +15,12 @@ public class BattleManager : MonoBehaviour
     public GameObject battlePanel;
     public Transform handContainer;
     public CardUI cardPrefab;
-    public TMP_Text playerStatsText, enemyStatsText, deckCountText, discardCountText, resultText;
+    public TMP_Text deckCountText, discardCountText, resultText;
     public Button endTurnButton;
+
+    [Header("Stats UI (Drag Correct UI Here!)")]
+    public TMP_Text playerStatsTextUI; 
+    public TMP_Text enemyStatsTextUI; 
 
     [Header("Bars")]
     public StatBar playerHpBar;
@@ -24,7 +28,6 @@ public class BattleManager : MonoBehaviour
     public StatBar enemyHpBar;
     public StatBar enemyManaBar;
 
-    Combatant player, enemy;
     EnemyData enemyData;
     CardFlow flow = new CardFlow();
     List<string> acquiredCards;
@@ -37,6 +40,15 @@ public class BattleManager : MonoBehaviour
         Instance = this;
         battlePanel.SetActive(false);
         endTurnButton.onClick.AddListener(OnEndTurnClicked);
+
+        if (GameStatsManager.Instance != null)
+        {
+            GameStatsManager.Instance.SetupUIReferences(
+                playerHpBar, playerManaBar, 
+                enemyHpBar, enemyManaBar, 
+                playerStatsTextUI, enemyStatsTextUI
+            );
+        }
     }
 
     void Start()
@@ -44,32 +56,51 @@ public class BattleManager : MonoBehaviour
         StartBattle(BattleTransfer.enemyId);
     }
 
-    // ---------- START ----------
+    void Update()
+    {
+        if (state == State.Inactive || GameStatsManager.Instance == null) return;
+
+        var gm = GameStatsManager.Instance;
+
+        deckCountText.text = "Deck: " + gm.drawCards;
+        discardCountText.text = "Discard: " + gm.discardCards;
+
+        if (handContainer.childCount != gm.handCards)
+        {
+            RefreshHandVisuals();
+        }
+    }
+
+    void RefreshHandVisuals()
+    {
+        var gm = GameStatsManager.Instance;
+        foreach (Transform child in handContainer) Destroy(child.gameObject);
+        
+        for (int i = 0; i < gm.handCards; i++)
+        {
+            CardInstance c = (i < flow.hand.Count) ? flow.hand[i] : new CardInstance(CardDatabase.Get("BasicStrikeCard001"));
+            CardUI ui = Instantiate(cardPrefab, handContainer);
+            ui.Setup(c, OnCardClicked);
+        }
+    }
+
     public bool StartBattle(string enemyId)
     {
         if (state != State.Inactive) return false;
 
         enemyData = EnemyDatabase.Get(enemyId);
+        var gm = GameStatsManager.Instance;
+
+        gm.playerStats.ResetForBattle(fullHeal: true, startStamina: 1);
+        gm.SetupEnemy(enemyData);
 
         acquiredCards = new List<string>();
-        foreach (string id in CardDatabase.AllIds())
-        {
-            if (id == "JUNK-001") continue;
-            if (id.StartsWith("EN-")) continue;
-            if (id.StartsWith("SC-")) continue;
-            if (id.StartsWith("WIS-")) continue;
-            if (id.StartsWith("PD-")) continue;
-            if (id.StartsWith("WW-")) continue;
-            if (id.StartsWith("WIT-")) continue;
-
-            acquiredCards.Add(id);
-            acquiredCards.Add(id);
-        }
-
-        player = new Combatant("Player", PlayerProfile.MaxHp, 5, 3);
-        enemy = new Combatant(enemyData.enemyName, enemyData.maxHp, enemyData.maxMana, enemyData.startingMana);
-
+        foreach (string id in CardDatabase.AllIds()) { acquiredCards.Add(id); acquiredCards.Add(id); }
         flow.StartBattle(acquiredCards, 3);
+
+        gm.handCards = flow.hand.Count;
+        gm.drawCards = flow.deck.Count;
+        gm.discardCards = flow.discard.Count;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -81,108 +112,49 @@ public class BattleManager : MonoBehaviour
         return true;
     }
 
-    // ---------- PLAY CARD ----------
     void OnCardClicked(CardInstance card)
     {
         if (state != State.PlayerTurn) return;
         if (!flow.hand.Contains(card)) return;
+        
+        var gm = GameStatsManager.Instance;
+        if (gm.playerStats.stamina < card.data.cost) { Debug.Log("Not enough Mana"); return; }
 
-        if (card.data.effect == CardEffectType.Junk)
-        {
-            Debug.Log("Junk card — unplayable.");
-            return;
-        }
-
-        if (player.stamina < card.data.cost)
-        {
-            Debug.Log("Not enough Mana");
-            return;
-        }
-
-        player.stamina -= card.data.cost;
-        ApplyEffect(card);
+        gm.playerStats.stamina -= card.data.cost;
+        ApplyEffect(card.data);
         flow.Discard(card);
 
-        if (enemy.hp <= 0) { EndBattle(true); return; }
+        gm.handCards = flow.hand.Count;
+        gm.drawCards = flow.deck.Count;
+        gm.discardCards = flow.discard.Count;
+
+        if (gm.activeEnemy != null && gm.activeEnemy.hp <= 0) { EndBattle(true); return; }
         Refresh();
     }
 
-    void ApplyEffect(CardInstance card)
+    void ApplyEffect(CardData c)
     {
-        CardData c = card.data;
-        int v = card.Value;
-        int s = card.Secondary;
-        int t = card.Tertiary;
-
+        var gm = GameStatsManager.Instance;
         switch (c.effect)
         {
-            case CardEffectType.Damage:
-                enemy.TakeDamage(v);
+            case CardEffectType.Damage:         
+                gm.ApplyDamageToEnemy(c.value); 
                 break;
-
-            case CardEffectType.MagicDamage:
-                enemy.TakeDamage(v);
+            case CardEffectType.RestoreStamina: 
+                gm.RestorePlayerStamina(c.value); 
                 break;
-
-            case CardEffectType.DirectHpDamage:
-                enemy.TakeDirectDamage(v);
-                if (s > 0) player.Heal(s);
+            case CardEffectType.Armor:          
+                gm.AddPlayerArmor(c.value); 
                 break;
-
-            case CardEffectType.Armor:
-                player.armor += v;
-                break;
-
-            case CardEffectType.RestoreMana:
-                player.RestoreStamina(v);
-                break;
-
-            case CardEffectType.RestoreHp:
-                player.Heal(v);
-                break;
-
-            case CardEffectType.ReduceNextAttack:
-                enemy.TakeDamage(v);
-                enemy.attackReduction += s;
-                break;
-
-            case CardEffectType.MultiHit:
-                for (int i = 0; i < t && enemy.hp > 0; i++)
-                    enemy.TakeDamage(v);
-                break;
-
-            case CardEffectType.NullifyNextCard:
-                enemy.parryBlock = true;
-                if (v > 0) flow.Draw(v);
-                break;
-
-            case CardEffectType.CounterNextAttack:
-                enemy.counterIncoming = true;
-                if (v > 0) flow.Draw(v);
-                break;
-
-            case CardEffectType.AddJunkCards:
-                enemy.junkToAdd += v;
-                break;
-
-            case CardEffectType.DamageAndReduce:
-                enemy.TakeDamage(v);
-                enemy.attackReduction += s;
-                break;
-
-            case CardEffectType.ArmorAndDraw:
-                player.armor += v;
-                if (s > 0) flow.Draw(s);
+            case CardEffectType.Frost:          
+                gm.AddEnemyAttackReduction(c.value); 
                 break;
         }
     }
 
-    // ---------- TURNS ----------
     void OnEndTurnClicked()
     {
         if (state != State.PlayerTurn) return;
-
-        flow.PurgeJunkFromHand();
         state = State.EnemyTurn;
         Refresh();
         StartCoroutine(EnemyTurn());
@@ -191,177 +163,57 @@ public class BattleManager : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         yield return new WaitForSeconds(1f);
+        var gm = GameStatsManager.Instance;
 
-        if (enemy.junkToAdd > 0)
+        if (gm.activeEnemy == null) yield break;
+
+        gm.activeEnemy.stamina = Mathf.Min(gm.activeEnemy.maxStamina, gm.activeEnemy.stamina + 1); 
+        
+        int attack = enemyData.attackDamage;
+        if (gm.activeEnemy.stamina >= enemyData.specialCost)         
         {
-            flow.AddJunk(enemy.junkToAdd);
-            enemy.junkToAdd = 0;
+            gm.activeEnemy.stamina -= enemyData.specialCost;
+            attack += enemyData.specialBonus;
         }
 
-        enemy.RestoreStamina(1);
+        attack = Mathf.Max(0, attack - gm.activeEnemy.attackReduction);
+        gm.activeEnemy.attackReduction = 0;
 
-        if (enemy.parryBlock)
-        {
-            enemy.parryBlock = false;
-            Debug.Log("[Enemy] Parried — turn skipped.");
-            Refresh();
-        }
-        else
-        {
-            CardInstance uniqueCard = TryGetUniqueCard();
-            CardInstance chosenCard;
+        gm.ApplyDamageToPlayer(attack); 
+        gm.playerStats.armor = 0; 
+        
+        Refresh();
+        yield return new WaitForSeconds(0.5f);
 
-            if (uniqueCard != null && enemy.stamina >= uniqueCard.data.cost)
-            {
-                chosenCard = uniqueCard;
-                Debug.Log($"[Enemy] Casting UNIQUE: {chosenCard.data.cardName}");
-            }
-            else
-            {
-                chosenCard = PickWeightedEnemyCard();
-                if (chosenCard != null)
-                    Debug.Log($"[Enemy] Playing: {chosenCard.data.cardName}");
-            }
-
-            if (chosenCard != null)
-            {
-                enemy.stamina -= chosenCard.data.cost;
-                ExecuteEnemyCard(chosenCard);
-                Refresh();
-                yield return new WaitForSeconds(0.5f);
-            }
-
-            if (enemy.hp <= 0) { EndBattle(true); yield break; }
-            if (player.hp <= 0) { EndBattle(false); yield break; }
+        if (gm.playerStats.hp <= 0) 
+        { 
+            EndBattle(false); 
+            yield break; 
         }
 
-        player.RestoreStamina(1);
-        flow.Draw(2);
+        gm.RestorePlayerStamina(1);
+        flow.Draw(2); 
+
+        gm.handCards = flow.hand.Count;
+        gm.drawCards = flow.deck.Count;
+        gm.discardCards = flow.discard.Count;
+        
         state = State.PlayerTurn;
         Refresh();
     }
 
-    // ---------- ENEMY CARD SELECTION ----------
-    CardInstance TryGetUniqueCard()
-    {
-        if (string.IsNullOrEmpty(enemyData.uniqueCardId)) return null;
-        return new CardInstance(CardDatabase.Get(enemyData.uniqueCardId));
-    }
-
-    CardInstance PickWeightedEnemyCard()
-    {
-        var candidates = new List<(string id, int weight)>();
-        if (!string.IsNullOrEmpty(enemyData.basicAttackCardId) && enemyData.basicAttackWeight > 0)
-            candidates.Add((enemyData.basicAttackCardId, enemyData.basicAttackWeight));
-        if (!string.IsNullOrEmpty(enemyData.regularAttackCardId) && enemyData.regularAttackWeight > 0)
-            candidates.Add((enemyData.regularAttackCardId, enemyData.regularAttackWeight));
-        if (!string.IsNullOrEmpty(enemyData.manaCardId) && enemyData.manaCardWeight > 0)
-            candidates.Add((enemyData.manaCardId, enemyData.manaCardWeight));
-
-        if (candidates.Count == 0) return null;
-
-        var affordable = new List<(string id, int weight)>();
-        foreach (var c in candidates)
-        {
-            CardData cd = CardDatabase.Get(c.id);
-            if (enemy.stamina >= cd.cost) affordable.Add(c);
-        }
-
-        if (affordable.Count == 0) return null;
-
-        int totalWeight = 0;
-        foreach (var a in affordable) totalWeight += a.weight;
-
-        int roll = Random.Range(0, totalWeight);
-        foreach (var a in affordable)
-        {
-            roll -= a.weight;
-            if (roll < 0) return new CardInstance(CardDatabase.Get(a.id));
-        }
-
-        return new CardInstance(CardDatabase.Get(affordable[0].id));
-    }
-
-    // ---------- ENEMY CARD EXECUTION ----------
-    void ExecuteEnemyCard(CardInstance card)
-    {
-        int v = card.Value;
-        int s = card.Secondary;
-
-        switch (card.data.effect)
-        {
-            case CardEffectType.Damage:
-            case CardEffectType.MagicDamage:
-                {
-                    int dmg = enemy.ResolveOutgoingAttack(v);
-                    if (enemy.counterIncoming)
-                    {
-                        enemy.counterIncoming = false;
-                        enemy.TakeDirectDamage(dmg);
-                    }
-                    else
-                    {
-                        player.TakeDamage(dmg);
-                    }
-                    player.armor = 0;
-                }
-                break;
-
-            case CardEffectType.RestoreMana:
-                enemy.RestoreStamina(v);
-                break;
-
-            case CardEffectType.DirectHpDamage:
-                {
-                    int dmg = enemy.ResolveOutgoingAttack(v);
-                    if (enemy.counterIncoming)
-                    {
-                        enemy.counterIncoming = false;
-                        enemy.TakeDirectDamage(dmg);
-                    }
-                    else
-                    {
-                        player.TakeDirectDamage(dmg);
-                    }
-                    if (s > 0) enemy.Heal(s);
-                }
-                break;
-
-            case CardEffectType.DamageAndReduce:
-                {
-                    int dmg = enemy.ResolveOutgoingAttack(v);
-                    if (enemy.counterIncoming)
-                    {
-                        enemy.counterIncoming = false;
-                        enemy.TakeDirectDamage(dmg);
-                    }
-                    else
-                    {
-                        player.TakeDamage(dmg);
-                    }
-                    player.attackReduction += s;
-                    player.armor = 0;
-                }
-                break;
-
-            case CardEffectType.ArmorAndDraw:
-                enemy.armor += v;
-                break;
-        }
-    }
-
-    // ---------- END ----------
-    void EndBattle(bool victory)
+    public void EndBattle(bool victory)
     {
         if (state == State.Ended || state == State.Inactive) return;
         state = State.Ended;
         lastVictory = victory;
+        var gm = GameStatsManager.Instance;
 
         if (victory)
         {
-            bool leveledUp = PlayerProfile.AddReward(enemyData.xpReward, enemyData.coinReward);
+            bool leveledUp = gm.AddReward();
             resultText.text = "VICTORY!\n+" + enemyData.xpReward + " XP   +" + enemyData.coinReward + " Coins";
-            if (leveledUp) resultText.text += "\nLEVEL UP! Level " + PlayerProfile.level;
+            if (leveledUp) resultText.text += "\nLEVEL UP! Level " + gm.playerStats.level;
         }
         else
         {
@@ -379,55 +231,25 @@ public class BattleManager : MonoBehaviour
         if (lastVictory && !string.IsNullOrEmpty(BattleTransfer.enemyKey))
             BattleTransfer.defeated.Add(BattleTransfer.enemyKey);
 
-        // I-reset ang battleLoading para makapag-trigger ulit sa ibang enemy
-        NPCBattleTrigger.ResetBattleLoading();
-
+        GameStatsManager.Instance.ClearEnemy();
         state = State.Inactive;
         SceneManager.LoadScene(BattleTransfer.explorationScene);
     }
 
-    // ---------- UI ----------
-    void Refresh()
+    public void Refresh()
     {
-        // I-detach muna at i-destroy ang mga lumang card UI
-        if (handContainer != null)
+        var gm = GameStatsManager.Instance;
+
+        if (playerHpBar != null)   playerHpBar.Set(gm.playerStats.hp, gm.playerStats.maxHp);
+        if (playerManaBar != null) playerManaBar.Set(gm.playerStats.stamina, gm.playerStats.maxStamina);
+        
+        if (gm.activeEnemy != null)
         {
-            for (int i = handContainer.childCount - 1; i >= 0; i--)
-            {
-                Transform child = handContainer.GetChild(i);
-                child.SetParent(null);
-                Destroy(child.gameObject);
-            }
+            if (enemyHpBar != null)    enemyHpBar.Set(gm.activeEnemy.hp, gm.activeEnemy.maxHp);
+            if (enemyManaBar != null)  enemyManaBar.Set(gm.activeEnemy.stamina, gm.activeEnemy.maxStamina);
         }
 
-        if (cardPrefab == null)
-        {
-            Debug.LogError("[BattleManager] cardPrefab is NULL! I-drag ang CardUI prefab sa Inspector.");
-            return;
-        }
-
-        if (flow.hand != null)
-        {
-            foreach (CardInstance c in flow.hand)
-            {
-                CardUI ui = Instantiate(cardPrefab, handContainer);
-                ui.Setup(c, OnCardClicked);
-            }
-        }
-
-        playerStatsText.text = string.Format("PLAYER  Lv {0}\nArmor {1}\nXP {2}/{3}\nCoins {4}",
-            PlayerProfile.level, player.armor, PlayerProfile.xp, PlayerProfile.XpToNext, PlayerProfile.coins);
-
-        enemyStatsText.text = string.Format("{0} ({1})\nNext attack -{2}",
-            enemyData.enemyName, enemyData.difficulty, enemy.attackReduction);
-
-        if (playerHpBar != null)   playerHpBar.Set(player.hp, player.maxHp);
-        if (playerManaBar != null) playerManaBar.Set(player.stamina, player.maxStamina);
-        if (enemyHpBar != null)    enemyHpBar.Set(enemy.hp, enemy.maxHp);
-        if (enemyManaBar != null)  enemyManaBar.Set(enemy.stamina, enemy.maxStamina);
-
-        deckCountText.text = "Deck: " + flow.deck.Count;
-        discardCountText.text = "Discard: " + flow.discard.Count;
+        gm.RefreshUI();
         endTurnButton.interactable = (state == State.PlayerTurn);
     }
 }

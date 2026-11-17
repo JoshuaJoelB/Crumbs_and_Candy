@@ -365,6 +365,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Werewolf
       objectReference: {fileID: 0}
+    - target: {fileID: 6424617543363023431, guid: 0bfeffee46bef72448329da605ab1cab, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -549,6 +553,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Scarecrow
       objectReference: {fileID: 0}
+    - target: {fileID: 7893718787744957538, guid: 883a9c794ea683543b22bda661419db1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -565,6 +573,10 @@ PrefabInstance:
     - target: {fileID: 16062136478577586, guid: ef6551e2896ad774f8dcd34bb90d11b1, type: 3}
       propertyPath: m_Name
       value: Enemy_WillOWisp
+      objectReference: {fileID: 0}
+    - target: {fileID: 16062136478577586, guid: ef6551e2896ad774f8dcd34bb90d11b1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6798083795369238214, guid: ef6551e2896ad774f8dcd34bb90d11b1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2112,6 +2124,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_PorcelainDoll
       objectReference: {fileID: 0}
+    - target: {fileID: 8754550962519776420, guid: a61e1293388ea9c4cb7b43d641d91b88, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2128,6 +2144,10 @@ PrefabInstance:
     - target: {fileID: 1784682364156766132, guid: 1de931fdb5ae73845ae3e274de7b4ed3, type: 3}
       propertyPath: m_Name
       value: Enemy_Witch
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784682364156766132, guid: 1de931fdb5ae73845ae3e274de7b4ed3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5092096165236099776, guid: 1de931fdb5ae73845ae3e274de7b4ed3, type: 3}
       propertyPath: m_LocalPosition.x

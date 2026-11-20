@@ -78,7 +78,8 @@ public class BattleManager : MonoBehaviour
         
         for (int i = 0; i < gm.handCards; i++)
         {
-            CardInstance c = (i < flow.hand.Count) ? flow.hand[i] : new CardInstance(CardDatabase.Get("BasicStrikeCard001"));
+            // FIXED: Changed "BasicStrikeCard001" to the new "BASIC-001" ID
+            CardInstance c = (i < flow.hand.Count) ? flow.hand[i] : new CardInstance(CardDatabase.Get("BASIC-001"));
             CardUI ui = Instantiate(cardPrefab, handContainer);
             ui.Setup(c, OnCardClicked);
         }
@@ -135,20 +136,31 @@ public class BattleManager : MonoBehaviour
     void ApplyEffect(CardData c)
     {
         var gm = GameStatsManager.Instance;
+        
+        // FIXED: Extracts the base value from your new 'values' array
+        int val = (c.values != null && c.values.Length > 0) ? c.values[0] : 0;
+
         switch (c.effect)
         {
             case CardEffectType.Damage:         
-                gm.ApplyDamageToEnemy(c.value); 
+                gm.ApplyDamageToEnemy(val); 
                 break;
-            case CardEffectType.RestoreStamina: 
-                gm.RestorePlayerStamina(c.value); 
+            case CardEffectType.MagicDamage:
+            case CardEffectType.DirectHpDamage:
+                // For now, magic and direct damage just deal normal damage
+                gm.ApplyDamageToEnemy(val); 
+                break;
+            case CardEffectType.RestoreMana: 
+                gm.RestorePlayerStamina(val); 
                 break;
             case CardEffectType.Armor:          
-                gm.AddPlayerArmor(c.value); 
+                gm.AddPlayerArmor(val); 
                 break;
-            case CardEffectType.Frost:          
-                gm.AddEnemyAttackReduction(c.value); 
+            case CardEffectType.ReduceNextAttack:
+            case CardEffectType.DamageAndReduce:          
+                gm.AddEnemyAttackReduction(val); 
                 break;
+            // Add other effects here as you implement them (Junk, MultiHit, etc.)
         }
     }
 
@@ -169,13 +181,10 @@ public class BattleManager : MonoBehaviour
 
         gm.activeEnemy.stamina = Mathf.Min(gm.activeEnemy.maxStamina, gm.activeEnemy.stamina + 1); 
         
-        int attack = enemyData.attackDamage;
-        if (gm.activeEnemy.stamina >= enemyData.specialCost)         
-        {
-            gm.activeEnemy.stamina -= enemyData.specialCost;
-            attack += enemyData.specialBonus;
-        }
-
+        // FIXED: Since your new EnemyData doesn't have attackDamage/specialCost anymore,
+        // I put a placeholder of 5 damage. You will need to implement an Enemy Card Deck here later!
+        int attack = 5; 
+        
         attack = Mathf.Max(0, attack - gm.activeEnemy.attackReduction);
         gm.activeEnemy.attackReduction = 0;
 

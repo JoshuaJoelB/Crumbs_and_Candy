@@ -9,13 +9,8 @@ public class CardFlow
 
     public void StartBattle(List<string> acquiredIds, int openingDraw)
     {
-<<<<<<< HEAD:Assets/Script/CardFlow.cs
-        deck.Clear(); hand.Clear(); discard.Clear();           
-        foreach (string id in acquiredIds)                      
-=======
         deck.Clear(); hand.Clear(); discard.Clear();
         foreach (string id in acquiredIds)
->>>>>>> 96c19ab4c6152bd1848ff7cc66b07217454bb857:Assets/Script/Cards/CardFlow.cs
             deck.Add(new CardInstance(CardDatabase.Get(id)));
         Shuffle(deck);
         Draw(openingDraw);
@@ -27,11 +22,7 @@ public class CardFlow
         {
             if (deck.Count == 0)
             {
-<<<<<<< HEAD:Assets/Script/CardFlow.cs
-                if (discard.Count == 0) return;                 
-=======
                 if (discard.Count == 0) return;
->>>>>>> 96c19ab4c6152bd1848ff7cc66b07217454bb857:Assets/Script/Cards/CardFlow.cs
                 deck.AddRange(discard); discard.Clear(); Shuffle(deck);
             }
             CardInstance top = deck[deck.Count - 1];
@@ -42,11 +33,7 @@ public class CardFlow
 
     public bool Discard(CardInstance card)
     {
-<<<<<<< HEAD:Assets/Script/CardFlow.cs
-        if (!hand.Remove(card)) return false;                   
-=======
         if (!hand.Remove(card)) return false;
->>>>>>> 96c19ab4c6152bd1848ff7cc66b07217454bb857:Assets/Script/Cards/CardFlow.cs
         discard.Add(card);
         return true;
     }

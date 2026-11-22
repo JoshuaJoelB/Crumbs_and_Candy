@@ -5,10 +5,10 @@ public class Combatant
     public string name;
     public int maxHp, hp, maxStamina, stamina;
     public int armor, attackReduction;
-
+    
     public bool parryBlock;
     public bool counterIncoming;
-    public int  junkToAdd;
+    public int junkToAdd;
 
     public Combatant(string name, int maxHp, int maxStamina, int startStamina)
     {
@@ -30,14 +30,14 @@ public class Combatant
         hp = Mathf.Max(0, hp - amount);
     }
 
-    public void RestoreStamina(int amount)
-    {
-        stamina = Mathf.Min(maxStamina, stamina + amount);
-    }
-
     public void Heal(int amount)
     {
         hp = Mathf.Min(maxHp, hp + amount);
+    }
+
+    public void RestoreStamina(int amount)
+    {
+        stamina = Mathf.Min(maxStamina, stamina + amount);
     }
 
     public int ResolveOutgoingAttack(int rawDamage)

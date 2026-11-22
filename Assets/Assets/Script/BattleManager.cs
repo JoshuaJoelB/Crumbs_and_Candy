@@ -13,21 +13,23 @@ public class BattleManager : MonoBehaviour
 
     [Header("Main UI")]
     public GameObject battlePanel;
-    public Transform handContainer;
+    
+    [Header("Card UI (Drag these from Hierarchy)")]
+    public Transform handContainer;    
     public CardUI cardPrefab;
+    public TMP_Text deckCountText;     
+    public TMP_Text discardCountText;  
     public Button endTurnButton;
 
     [Header("Text & Bars")]
     public TMP_Text playerStatsText;
     public TMP_Text enemyStatsText;
-    public TMP_Text deckCountText;
-    public TMP_Text discardCountText;
     public TMP_Text turnIndicatorText; 
 
     public StatBar playerHpBar;
     public StatBar playerManaBar;
     public StatBar enemyHpBar;
-    public StatBar enemyManaBar; // Ibinalik natin ito base sa hiling mo
+    public StatBar enemyManaBar;
 
     [Header("Victory / Defeat UI")]
     public VictoryRewardUI victoryUI;
@@ -37,7 +39,6 @@ public class BattleManager : MonoBehaviour
     EnemyData enemyData;
     CardFlow flow = new CardFlow();
     
-    // Enemy Deck System
     List<CardInstance> enemyDeck = new List<CardInstance>();
     List<CardInstance> enemyDiscard = new List<CardInstance>();
     CardInstance enemyUniqueCard;
@@ -45,6 +46,23 @@ public class BattleManager : MonoBehaviour
     List<CardInstance> startingDeck;
     bool lastVictory;
     private CardInstance previewedEnemyCard;
+
+    // --- VARIABLES TO TRACK INSPECTOR CHANGES ---
+    private int lastSyncedHand = -1;
+    private int lastSyncedDraw = -1;
+    private int lastSyncedDiscard = -1;
+
+    private int lastPlayerHp = -1;
+    private int lastPlayerMaxHp = -1;
+    private int lastPlayerMana = -1;
+    private int lastPlayerMaxMana = -1;
+    private int lastPlayerArmor = -1;
+
+    private int lastEnemyHp = -1;
+    private int lastEnemyMaxHp = -1;
+    private int lastEnemyMana = -1;
+    private int lastEnemyMaxMana = -1;
+    private int lastEnemyArmor = -1;
 
     public bool IsBusy { get { return state != State.Inactive; } }
 
@@ -60,14 +78,84 @@ public class BattleManager : MonoBehaviour
         StartBattle(BattleTransfer.enemyId);
     }
 
-    // ---------- START ----------
+    // --- THIS WATCHES THE INSPECTOR AND UPDATES GAMEPLAY IN REAL-TIME ---
+    void Update()
+    {
+        if (state == State.Inactive || GameStatsManager.Instance == null || player == null || enemy == null) return;
+        var gm = GameStatsManager.Instance;
+
+        bool needsRefresh = false;
+
+        // --- SYNC PLAYER STATS FROM INSPECTOR ---
+        if (gm.playerStats.hp != lastPlayerHp) { player.hp = gm.playerStats.hp; needsRefresh = true; }
+        if (gm.playerStats.maxHp != lastPlayerMaxHp) { player.maxHp = gm.playerStats.maxHp; needsRefresh = true; }
+        if (gm.playerStats.stamina != lastPlayerMana) { player.stamina = gm.playerStats.stamina; needsRefresh = true; }
+        if (gm.playerStats.maxStamina != lastPlayerMaxMana) { player.maxStamina = gm.playerStats.maxStamina; needsRefresh = true; }
+        if (gm.playerStats.armor != lastPlayerArmor) { player.armor = gm.playerStats.armor; needsRefresh = true; }
+
+        // --- SYNC ENEMY STATS FROM INSPECTOR ---
+        if (gm.activeEnemy != null)
+        {
+            if (gm.activeEnemy.hp != lastEnemyHp) { enemy.hp = gm.activeEnemy.hp; needsRefresh = true; }
+            if (gm.activeEnemy.maxHp != lastEnemyMaxHp) { enemy.maxHp = gm.activeEnemy.maxHp; needsRefresh = true; }
+            if (gm.activeEnemy.stamina != lastEnemyMana) { enemy.stamina = gm.activeEnemy.stamina; needsRefresh = true; }
+            if (gm.activeEnemy.maxStamina != lastEnemyMaxMana) { enemy.maxStamina = gm.activeEnemy.maxStamina; needsRefresh = true; }
+            if (gm.activeEnemy.armor != lastEnemyArmor) { enemy.armor = gm.activeEnemy.armor; needsRefresh = true; }
+        }
+
+        // --- SYNC CARD COUNTS FROM INSPECTOR ---
+        if (gm.handCards != lastSyncedHand) { ForceHandCount(gm.handCards); needsRefresh = true; }
+        if (gm.drawCards != lastSyncedDraw) { ForceDrawCount(gm.drawCards); needsRefresh = true; }
+        if (gm.discardCards != lastSyncedDiscard) { ForceDiscardCount(gm.discardCards); needsRefresh = true; }
+
+        if (needsRefresh) Refresh();
+    }
+
+    void ForceHandCount(int target)
+    {
+        target = Mathf.Max(0, target);
+        while (flow.hand.Count > target && flow.hand.Count > 0)
+            flow.Discard(flow.hand[flow.hand.Count - 1]);
+            
+        while (flow.hand.Count < target)
+        {
+            if (flow.deck.Count > 0) flow.Draw(1);
+            else flow.hand.Add(new CardInstance(CardDatabase.Get("BASIC-001")));
+        }
+    }
+
+    void ForceDrawCount(int target)
+    {
+        target = Mathf.Max(0, target);
+        while (flow.deck.Count > target && flow.deck.Count > 0)
+            flow.deck.RemoveAt(flow.deck.Count - 1);
+            
+        while (flow.deck.Count < target)
+        {
+            if (flow.discard.Count > 0) { flow.deck.Add(flow.discard[0]); flow.discard.RemoveAt(0); }
+            else flow.deck.Add(new CardInstance(CardDatabase.Get("BASIC-001")));
+        }
+    }
+
+    void ForceDiscardCount(int target)
+    {
+        target = Mathf.Max(0, target);
+        while (flow.discard.Count > target && flow.discard.Count > 0)
+            flow.discard.RemoveAt(flow.discard.Count - 1);
+            
+        while (flow.discard.Count < target)
+        {
+            if (flow.deck.Count > 0) { flow.discard.Add(flow.deck[0]); flow.deck.RemoveAt(0); }
+            else flow.discard.Add(new CardInstance(CardDatabase.Get("BASIC-001")));
+        }
+    }
+
     public bool StartBattle(string enemyId)
     {
         if (state != State.Inactive) return false;
 
         enemyData = EnemyDatabase.Get(enemyId);
 
-        // Player Deck Setup
         startingDeck = new List<CardInstance>();
         List<string> ownedCardIds = CardCollection.GetOwnedCards();
 
@@ -86,7 +174,6 @@ public class BattleManager : MonoBehaviour
             startingDeck.Add(new CardInstance(CardDatabase.Get(id), lvl));
         }
 
-        // Enemy Deck Setup
         enemyDeck.Clear();
         enemyDiscard.Clear();
         
@@ -119,13 +206,18 @@ public class BattleManager : MonoBehaviour
         return true;
     }
 
-    // ---------- PLAYER TURN ----------
     void OnCardClicked(CardInstance card)
     {
         if (state != State.PlayerTurn) return;
         if (!flow.hand.Contains(card)) return;
         if (card.data.effect == CardEffectType.Junk) return;
-        if (player.stamina < card.data.cost) return;
+        
+        // THIS WILL NOW CHECK THE REAL-TIME UPDATED MANA!
+        if (player.stamina < card.data.cost) 
+        {
+            Debug.Log("Not enough Mana!");
+            return;
+        }
 
         player.stamina -= card.data.cost;
         ApplyEffect(card);
@@ -158,7 +250,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    // ---------- TURNS ----------
     void OnEndTurnClicked()
     {
         if (state != State.PlayerTurn) return;
@@ -205,7 +296,6 @@ public class BattleManager : MonoBehaviour
         Refresh();
     }
 
-    // ---------- ENEMY CARD SELECTION ----------
     void SetEnemyIntentLogic()
     {
         previewedEnemyCard = null;
@@ -256,7 +346,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    // ---------- ENEMY CARD EXECUTION ----------
     void ExecuteEnemyCard(CardInstance card)
     {
         int v = card.Value;
@@ -306,7 +395,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    // ---------- END ----------
     void EndBattle(bool victory)
     {
         if (state == State.Ended || state == State.Inactive) return;
@@ -316,8 +404,6 @@ public class BattleManager : MonoBehaviour
         if (victory)
         {
             PlayerProfile.AddReward(enemyData.xpReward, enemyData.coinReward);
-            
-            // BAGONG TAWAG PARA SA RANDOM CLASS CARD REWARD
             string rewardCardId = GetRandomClassCard();
 
             if (victoryUI != null)
@@ -347,11 +433,10 @@ public class BattleManager : MonoBehaviour
         Refresh();
     }
 
-    // BAGONG METHOD PARA SA RANDOM CLASS CARD
     string GetRandomClassCard()
     {
         if (enemyData.classDeck == null || enemyData.classDeck.Count == 0)
-            return "BASIC-001"; // Fallback kung walang class card
+            return "BASIC-001";
 
         int randomIndex = Random.Range(0, enemyData.classDeck.Count);
         return enemyData.classDeck[randomIndex].cardId;
@@ -368,7 +453,6 @@ public class BattleManager : MonoBehaviour
         SceneManager.LoadScene(BattleTransfer.explorationScene);
     }
 
-    // ---------- UI ----------
     void Refresh()
     {
         if (handContainer != null)
@@ -403,5 +487,56 @@ public class BattleManager : MonoBehaviour
         if (enemyManaBar != null) enemyManaBar.Set(enemy.stamina, enemy.maxStamina);
 
         if (endTurnButton != null) endTurnButton.interactable = (state == State.PlayerTurn);
+
+        // --- SYNC TO INSPECTOR ---
+        if (GameStatsManager.Instance != null && player != null && enemy != null)
+        {
+            var gm = GameStatsManager.Instance;
+            
+            gm.handCards = flow.hand.Count;
+            gm.drawCards = flow.deck.Count;
+            gm.discardCards = flow.discard.Count;
+
+            gm.playerStats.hp = player.hp;
+            gm.playerStats.maxHp = player.maxHp;
+            gm.playerStats.stamina = player.stamina;
+            gm.playerStats.maxStamina = player.maxStamina;
+            gm.playerStats.armor = player.armor;
+            gm.playerStats.level = PlayerProfile.level;
+            gm.playerStats.xp = PlayerProfile.xp;
+            gm.playerStats.xpToNext = PlayerProfile.XpToNext;
+            gm.playerStats.coins = PlayerProfile.coins;
+
+            if (gm.activeEnemy == null || gm.activeEnemy.displayName != enemyData.enemyName)
+            {
+                gm.activeEnemy = new StatBlock(enemyData.id, enemyData.enemyName);
+                gm.activeEnemy.difficulty = enemyData.difficulty;
+            }
+            gm.activeEnemy.hp = enemy.hp;
+            gm.activeEnemy.maxHp = enemy.maxHp;
+            gm.activeEnemy.stamina = enemy.stamina;
+            gm.activeEnemy.maxStamina = enemy.maxStamina;
+            gm.activeEnemy.armor = enemy.armor;
+
+            // Save these numbers so the Update() loop knows the game caused this change
+            lastSyncedHand = gm.handCards;
+            lastSyncedDraw = gm.drawCards;
+            lastSyncedDiscard = gm.discardCards;
+
+            lastPlayerHp = gm.playerStats.hp;
+            lastPlayerMaxHp = gm.playerStats.maxHp;
+            lastPlayerMana = gm.playerStats.stamina;
+            lastPlayerMaxMana = gm.playerStats.maxStamina;
+            lastPlayerArmor = gm.playerStats.armor;
+
+            if (gm.activeEnemy != null)
+            {
+                lastEnemyHp = gm.activeEnemy.hp;
+                lastEnemyMaxHp = gm.activeEnemy.maxHp;
+                lastEnemyMana = gm.activeEnemy.stamina;
+                lastEnemyMaxMana = gm.activeEnemy.maxStamina;
+                lastEnemyArmor = gm.activeEnemy.armor;
+            }
+        }
     }
 }

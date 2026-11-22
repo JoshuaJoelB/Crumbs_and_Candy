@@ -1,10 +1,1 @@
-public enum CardClass
-{
-    Basic,
-    Normal,
-    Warrior,
-    Mage,
-    Trickster,
-    Berserker,
-    Enemy
-}
+public enum CardClass { Basic, Normal, Warrior, Mage, Trickster, Berserker, Enemy }

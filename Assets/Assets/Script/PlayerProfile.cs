@@ -11,7 +11,6 @@ public static class PlayerProfile
 
     static PlayerProfile() { Load(); }
 
-    // Returns true if the player leveled up
     public static bool AddReward(int xpGain, int coinGain)
     {
         coins += coinGain;
@@ -36,6 +35,4 @@ public static class PlayerProfile
         xp = PlayerPrefs.GetInt("xp", 0);
         coins = PlayerPrefs.GetInt("coins", 0);
     }
-
-    public static void ResetAll() { level = 1; xp = 0; coins = 0; Save(); }
 }

@@ -1442,11 +1442,11 @@ MonoBehaviour:
   battlePanel: {fileID: 703397558}
   handContainer: {fileID: 642652596}
   cardPrefab: {fileID: 4820339745038497683, guid: a0b8e32bf8a4eb04e81b0ba42a6525bf, type: 3}
+  deckCountText: {fileID: 1181627290}
+  discardCountText: {fileID: 280703935}
   endTurnButton: {fileID: 236441400}
   playerStatsText: {fileID: 385194511}
   enemyStatsText: {fileID: 735876823}
-  deckCountText: {fileID: 1181627290}
-  discardCountText: {fileID: 280703935}
   turnIndicatorText: {fileID: 2091202953}
   playerHpBar: {fileID: 147168071}
   playerManaBar: {fileID: 1410058778}
@@ -2305,7 +2305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &728046872
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2419,7 +2419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -461, y: -50}
+  m_AnchoredPosition: {x: -69, y: -69}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &735876823
@@ -3155,6 +3155,157 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1162274746}
   m_CullTransparentMesh: 1
+--- !u!1 &1181065807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1181065809}
+  - component: {fileID: 1181065808}
+  m_Layer: 0
+  m_Name: GameStatsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1181065808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181065807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6341362920ddcb44e9c60606c43b39c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameStatsManager
+  playerStats:
+    id: Player
+    displayName: PLAYER
+    difficulty: 
+    level: 1
+    maxHp: 100
+    hp: 100
+    maxStamina: 5
+    stamina: 5
+    armor: 0
+    attackReduction: 0
+    xp: 0
+    xpToNext: 50
+    coins: 0
+    xpReward: 0
+    coinReward: 0
+  handCards: 0
+  drawCards: 0
+  discardCards: 0
+  playerHpBar: {fileID: 147168071}
+  playerManaBar: {fileID: 1410058778}
+  enemyHpBar: {fileID: 1477947968}
+  enemyManaBar: {fileID: 1931236146}
+  playerStatsText: {fileID: 385194511}
+  enemyStatsText: {fileID: 735876823}
+  onPlayerDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 435448381}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: EndBattle
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 728046871}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 703397558}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerLevelUp:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1889564196}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 703397558}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  activeEnemy:
+    id: 
+    displayName: 
+    difficulty: 
+    level: 1
+    maxHp: 100
+    hp: 100
+    maxStamina: 5
+    stamina: 5
+    armor: 0
+    attackReduction: 0
+    xp: 0
+    xpToNext: 50
+    coins: 0
+    xpReward: 0
+    coinReward: 0
+--- !u!4 &1181065809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181065807}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.74902, y: -0, z: 2.58885}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1181627288
 GameObject:
   m_ObjectHideFlags: 0
@@ -4701,7 +4852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1889564197
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42176,3 +42327,4 @@ SceneRoots:
   - {fileID: 2028472617}
   - {fileID: 1682559340}
   - {fileID: 3243306803388679911}
+  - {fileID: 1181065809}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public class EnemyCardEntry
@@ -21,7 +22,7 @@ public class EnemyData
     public int xpReward, coinReward;
 
     public string uniqueCardId;
-    public string rewardCardId; // <-- BAGONG DAGDAG PARA SA REWARD
+    public string rewardCardId; 
     public List<EnemyCardEntry> regularDeck;
     public List<EnemyCardEntry> classDeck;
 

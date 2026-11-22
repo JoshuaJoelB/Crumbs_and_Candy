@@ -1,19 +1,18 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class CardFlow
 {
-    public List<CardInstance> deck    = new List<CardInstance>();
-    public List<CardInstance> hand    = new List<CardInstance>();
+    public List<CardInstance> deck = new List<CardInstance>();
+    public List<CardInstance> hand = new List<CardInstance>();
     public List<CardInstance> discard = new List<CardInstance>();
     
-    public int maxHandSize = 5; // LIMITADOR DITO
     static System.Random rng = new System.Random();
 
-    public void StartBattleWithInstances(List<CardInstance> cards, int openingDraw)
+    public void StartBattleWithInstances(List<CardInstance> startingDeck, int openingDraw)
     {
         deck.Clear(); hand.Clear(); discard.Clear();
-        foreach (CardInstance c in cards)
-            deck.Add(c);
+        deck.AddRange(startingDeck);
         Shuffle(deck);
         Draw(openingDraw);
     }
@@ -22,11 +21,9 @@ public class CardFlow
     {
         for (int i = 0; i < count; i++)
         {
-            if (hand.Count >= maxHandSize) return; // Tigil kung 5 na
-
             if (deck.Count == 0)
             {
-                if (discard.Count == 0) return;
+                if (discard.Count == 0) return;                 
                 deck.AddRange(discard); discard.Clear(); Shuffle(deck);
             }
             CardInstance top = deck[deck.Count - 1];
@@ -37,16 +34,16 @@ public class CardFlow
 
     public bool Discard(CardInstance card)
     {
-        if (!hand.Remove(card)) return false;
+        if (!hand.Remove(card)) return false;                   
         discard.Add(card);
         return true;
     }
 
     public void AddJunk(int count)
     {
-        CardData junk = CardDatabase.Get("JUNK-001");
+        CardData junkData = CardDatabase.Get("JUNK-001");
         for (int i = 0; i < count; i++)
-            deck.Add(new CardInstance(junk));
+            deck.Add(new CardInstance(junkData));
         Shuffle(deck);
     }
 

@@ -3165,6 +3165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1181065809}
   - component: {fileID: 1181065808}
+  - component: {fileID: 1181065810}
   m_Layer: 0
   m_Name: GameStatsManager
   m_TagString: Untagged
@@ -3306,6 +3307,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1181065810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181065807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dc7735a7ee943c4eb5000868e5e41bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDataViewer
+  playerProfile:
+    level: 8
+    xp: 90
+    xpToNext: 400
+    coins: 690
+    maxHp: 170
+  ownedCards:
+  - cardId: BASIC-001
+    cardName: Basic Attack
+    cardClass: 0
+    level: 1
+    quantity: 1
+    cost: 0
+    acquiredFrom: 0
+    description: Deal {value} physical damage.
+  - cardId: BASIC-002
+    cardName: Basic Guard
+    cardClass: 0
+    level: 1
+    quantity: 1
+    cost: 0
+    acquiredFrom: 0
+    description: Gain {value} armor.
+  - cardId: BASIC-003
+    cardName: Basic Mana
+    cardClass: 0
+    level: 1
+    quantity: 1
+    cost: 0
+    acquiredFrom: 0
+    description: Restore {value} mana.
+  - cardId: NOR-001
+    cardName: Heavy Attack
+    cardClass: 1
+    level: 1
+    quantity: 2
+    cost: 2
+    acquiredFrom: 0
+    description: Deal {value} physical damage.
+  - cardId: NOR-002
+    cardName: Basic Guard
+    cardClass: 1
+    level: 1
+    quantity: 1
+    cost: 1
+    acquiredFrom: 2
+    description: Gain {value} armor.
+  activeDeck:
+  - BASIC-001
+  - BASIC-002
+  - BASIC-003
+  - NOR-001
+  - NOR-002
+  acquisitionHistory:
+  - cardId: NOR-001
+    source: 1
+    timestamp: 2026-11-23 13:54:48
+  - cardId: NOR-002
+    source: 2
+    timestamp: 2026-11-23 14:07:34
+  debugCardIdToAdd: NOR-001
+  debugSource: 1
+  debugCardLevel: 1
 --- !u!1 &1181627288
 GameObject:
   m_ObjectHideFlags: 0

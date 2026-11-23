@@ -78,22 +78,20 @@ public class BattleManager : MonoBehaviour
         StartBattle(BattleTransfer.enemyId);
     }
 
-    // --- THIS WATCHES THE INSPECTOR AND UPDATES GAMEPLAY IN REAL-TIME ---
+    // --- NAG-SYNC NG INSPECTOR PERO TUMITIGIL KAPAG TAPOS NA ANG LABAN ---
     void Update()
     {
-        if (state == State.Inactive || GameStatsManager.Instance == null || player == null || enemy == null) return;
+        if (state == State.Inactive || state == State.Ended || GameStatsManager.Instance == null || player == null || enemy == null) return;
         var gm = GameStatsManager.Instance;
 
         bool needsRefresh = false;
 
-        // --- SYNC PLAYER STATS FROM INSPECTOR ---
         if (gm.playerStats.hp != lastPlayerHp) { player.hp = gm.playerStats.hp; needsRefresh = true; }
         if (gm.playerStats.maxHp != lastPlayerMaxHp) { player.maxHp = gm.playerStats.maxHp; needsRefresh = true; }
         if (gm.playerStats.stamina != lastPlayerMana) { player.stamina = gm.playerStats.stamina; needsRefresh = true; }
         if (gm.playerStats.maxStamina != lastPlayerMaxMana) { player.maxStamina = gm.playerStats.maxStamina; needsRefresh = true; }
         if (gm.playerStats.armor != lastPlayerArmor) { player.armor = gm.playerStats.armor; needsRefresh = true; }
 
-        // --- SYNC ENEMY STATS FROM INSPECTOR ---
         if (gm.activeEnemy != null)
         {
             if (gm.activeEnemy.hp != lastEnemyHp) { enemy.hp = gm.activeEnemy.hp; needsRefresh = true; }
@@ -103,7 +101,6 @@ public class BattleManager : MonoBehaviour
             if (gm.activeEnemy.armor != lastEnemyArmor) { enemy.armor = gm.activeEnemy.armor; needsRefresh = true; }
         }
 
-        // --- SYNC CARD COUNTS FROM INSPECTOR ---
         if (gm.handCards != lastSyncedHand) { ForceHandCount(gm.handCards); needsRefresh = true; }
         if (gm.drawCards != lastSyncedDraw) { ForceDrawCount(gm.drawCards); needsRefresh = true; }
         if (gm.discardCards != lastSyncedDiscard) { ForceDiscardCount(gm.discardCards); needsRefresh = true; }
@@ -114,9 +111,7 @@ public class BattleManager : MonoBehaviour
     void ForceHandCount(int target)
     {
         target = Mathf.Max(0, target);
-        while (flow.hand.Count > target && flow.hand.Count > 0)
-            flow.Discard(flow.hand[flow.hand.Count - 1]);
-            
+        while (flow.hand.Count > target && flow.hand.Count > 0) flow.Discard(flow.hand[flow.hand.Count - 1]);
         while (flow.hand.Count < target)
         {
             if (flow.deck.Count > 0) flow.Draw(1);
@@ -127,9 +122,7 @@ public class BattleManager : MonoBehaviour
     void ForceDrawCount(int target)
     {
         target = Mathf.Max(0, target);
-        while (flow.deck.Count > target && flow.deck.Count > 0)
-            flow.deck.RemoveAt(flow.deck.Count - 1);
-            
+        while (flow.deck.Count > target && flow.deck.Count > 0) flow.deck.RemoveAt(flow.deck.Count - 1);
         while (flow.deck.Count < target)
         {
             if (flow.discard.Count > 0) { flow.deck.Add(flow.discard[0]); flow.discard.RemoveAt(0); }
@@ -140,9 +133,7 @@ public class BattleManager : MonoBehaviour
     void ForceDiscardCount(int target)
     {
         target = Mathf.Max(0, target);
-        while (flow.discard.Count > target && flow.discard.Count > 0)
-            flow.discard.RemoveAt(flow.discard.Count - 1);
-            
+        while (flow.discard.Count > target && flow.discard.Count > 0) flow.discard.RemoveAt(flow.discard.Count - 1);
         while (flow.discard.Count < target)
         {
             if (flow.deck.Count > 0) { flow.discard.Add(flow.deck[0]); flow.deck.RemoveAt(0); }
@@ -153,7 +144,6 @@ public class BattleManager : MonoBehaviour
     public bool StartBattle(string enemyId)
     {
         if (state != State.Inactive) return false;
-
         enemyData = EnemyDatabase.Get(enemyId);
 
         startingDeck = new List<CardInstance>();
@@ -200,7 +190,6 @@ public class BattleManager : MonoBehaviour
 
         battlePanel.SetActive(true);
         state = State.PlayerTurn;
-        
         SetEnemyIntentLogic(); 
         Refresh();
         return true;
@@ -208,16 +197,7 @@ public class BattleManager : MonoBehaviour
 
     void OnCardClicked(CardInstance card)
     {
-        if (state != State.PlayerTurn) return;
-        if (!flow.hand.Contains(card)) return;
-        if (card.data.effect == CardEffectType.Junk) return;
-        
-        // THIS WILL NOW CHECK THE REAL-TIME UPDATED MANA!
-        if (player.stamina < card.data.cost) 
-        {
-            Debug.Log("Not enough Mana!");
-            return;
-        }
+        if (state != State.PlayerTurn || !flow.hand.Contains(card) || card.data.effect == CardEffectType.Junk || player.stamina < card.data.cost) return;
 
         player.stamina -= card.data.cost;
         ApplyEffect(card);
@@ -234,14 +214,12 @@ public class BattleManager : MonoBehaviour
 
         switch (c.effect)
         {
-            case CardEffectType.Damage:
-            case CardEffectType.MagicDamage: enemy.TakeDamage(v); break;
+            case CardEffectType.Damage: case CardEffectType.MagicDamage: enemy.TakeDamage(v); break;
             case CardEffectType.DirectHpDamage: enemy.TakeDirectDamage(v); if (s > 0) player.Heal(s); break;
             case CardEffectType.Armor: player.armor += v; break;
             case CardEffectType.RestoreMana: player.RestoreStamina(v); break;
             case CardEffectType.RestoreHp: player.Heal(v); break;
-            case CardEffectType.ReduceNextAttack:
-            case CardEffectType.DamageAndReduce: enemy.TakeDamage(v); enemy.attackReduction += s; break;
+            case CardEffectType.ReduceNextAttack: case CardEffectType.DamageAndReduce: enemy.TakeDamage(v); enemy.attackReduction += s; break;
             case CardEffectType.MultiHit: for (int i = 0; i < t && enemy.hp > 0; i++) enemy.TakeDamage(v); break;
             case CardEffectType.NullifyNextCard: enemy.parryBlock = true; if (v > 0) flow.Draw(v); break;
             case CardEffectType.CounterNextAttack: enemy.counterIncoming = true; if (v > 0) flow.Draw(v); break;
@@ -254,6 +232,7 @@ public class BattleManager : MonoBehaviour
     {
         if (state != State.PlayerTurn) return;
         flow.PurgeJunkFromHand();
+        flow.EnforceHandLimit(3); // <-- BAGONG LOGIC PARA SA 3 CARD LIMIT
         state = State.EnemyTurn;
         Refresh();
         StartCoroutine(EnemyTurn());
@@ -281,7 +260,6 @@ public class BattleManager : MonoBehaviour
                     enemyDiscard.Add(previewedEnemyCard);
                 }
             }
-
             Refresh();
             yield return new WaitForSeconds(0.5f);
 
@@ -398,7 +376,7 @@ public class BattleManager : MonoBehaviour
     void EndBattle(bool victory)
     {
         if (state == State.Ended || state == State.Inactive) return;
-        state = State.Ended;
+        state = State.Ended; // <-- ITO ANG PUMIPIGIL SA CONFLICT
         lastVictory = victory;
 
         if (victory)
@@ -413,6 +391,7 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
+                Debug.LogError("Victory UI is NULL! Check Inspector.");
                 battlePanel.SetActive(false);
                 StartCoroutine(ReturnToExploration());
             }
@@ -430,14 +409,11 @@ public class BattleManager : MonoBehaviour
                 StartCoroutine(ReturnToExploration());
             }
         }
-        Refresh();
     }
 
     string GetRandomClassCard()
     {
-        if (enemyData.classDeck == null || enemyData.classDeck.Count == 0)
-            return "BASIC-001";
-
+        if (enemyData.classDeck == null || enemyData.classDeck.Count == 0) return "BASIC-001";
         int randomIndex = Random.Range(0, enemyData.classDeck.Count);
         return enemyData.classDeck[randomIndex].cardId;
     }
@@ -469,7 +445,10 @@ public class BattleManager : MonoBehaviour
         {
             foreach (CardInstance c in flow.hand)
             {
-                CardUI ui = Instantiate(cardPrefab, handContainer);
+            CardClass cClass = c.data.cardClass;
+            CardUI prefabToUse = CardPrefabManager.Instance.GetPrefab(c.data.cardClass, c.data.id);
+            CardUI ui = Instantiate(prefabToUse, handContainer);
+ui.Setup(c, OnCardClicked);
                 ui.Setup(c, OnCardClicked);
             }
         }
@@ -488,7 +467,7 @@ public class BattleManager : MonoBehaviour
 
         if (endTurnButton != null) endTurnButton.interactable = (state == State.PlayerTurn);
 
-        // --- SYNC TO INSPECTOR ---
+        // --- SYNC TO INSPECTOR (Ito ang nagpapakita ng stats sa GameStatsManager) ---
         if (GameStatsManager.Instance != null && player != null && enemy != null)
         {
             var gm = GameStatsManager.Instance;
@@ -518,7 +497,6 @@ public class BattleManager : MonoBehaviour
             gm.activeEnemy.maxStamina = enemy.maxStamina;
             gm.activeEnemy.armor = enemy.armor;
 
-            // Save these numbers so the Update() loop knows the game caused this change
             lastSyncedHand = gm.handCards;
             lastSyncedDraw = gm.drawCards;
             lastSyncedDiscard = gm.discardCards;

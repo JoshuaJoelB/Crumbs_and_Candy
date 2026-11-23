@@ -43,7 +43,10 @@ public class VictoryRewardUI : MonoBehaviour
         // I-instantiate ang bagong card prefab
         if (cardPrefab != null && cardContainer != null)
         {
-            spawnedCard = Instantiate(cardPrefab, cardContainer);
+        CardClass cClass = data.cardClass;
+        CardUI prefabToUse = CardPrefabManager.Instance.GetPrefab(data.cardClass, data.id);
+        spawnedCard = Instantiate(prefabToUse, cardContainer);
+        spawnedCard.Setup(new CardInstance(data), (c) => {});
             
             // I-setup ang card (walang onClick function dahil reward lang ito)
             spawnedCard.Setup(new CardInstance(data), (c) => {});

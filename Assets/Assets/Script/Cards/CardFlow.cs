@@ -62,6 +62,19 @@ public class CardFlow
         return removed;
     }
 
+    // BAGONG METHOD PARA SA 3-CARD LIMIT
+    public void EnforceHandLimit(int limit)
+    {
+        while (hand.Count > limit)
+        {
+            int randomIndex = rng.Next(0, hand.Count);
+            CardInstance cardToRemove = hand[randomIndex];
+            hand.RemoveAt(randomIndex);
+            deck.Add(cardToRemove); // IBALIK SA DECK, HINDI SA DISCARD
+        }
+        Shuffle(deck);
+    }
+
     void Shuffle(List<CardInstance> list)
     {
         for (int i = list.Count - 1; i > 0; i--)

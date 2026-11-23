@@ -2305,7 +2305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &728046872
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4148,6 +4148,59 @@ MonoBehaviour:
   slider: {fileID: 1410058777}
   label: {fileID: 977858754}
   title: Mana
+--- !u!1 &1444755846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1444755848}
+  - component: {fileID: 1444755847}
+  m_Layer: 0
+  m_Name: CardPrefabManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1444755847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444755846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbb12b8ea27b4594a90a62e3de1f8422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardPrefabManager
+  basicPrefab: {fileID: 4820339745038497683, guid: a0b8e32bf8a4eb04e81b0ba42a6525bf, type: 3}
+  normalPrefab: {fileID: 4820339745038497683, guid: 765b7744f8ea4af4297cb54105dcc357, type: 3}
+  warriorPrefab: {fileID: 4820339745038497683, guid: 6e008e7d721501c4e8c2fe3e09844a46, type: 3}
+  magePrefab: {fileID: 4820339745038497683, guid: 3fe79ca5bf84f3e49acad692a11ffb1f, type: 3}
+  tricksterPrefab: {fileID: 4820339745038497683, guid: ad8d5ee891d9b3e42aff2b23383104eb, type: 3}
+  berserkerPrefab: {fileID: 4820339745038497683, guid: 41b31844d0762e94682419b126ef21ea, type: 3}
+  enemyRegularPrefab: {fileID: 4820339745038497683, guid: 512ab7312cdc1ef46a7a6aad00f07db5, type: 3}
+  uniqueEnemyPrefab: {fileID: 4820339745038497683, guid: 2601d9db73952b840b87980f42624af9, type: 3}
+  junkPrefab: {fileID: 4820339745038497683, guid: fcb50da9f65de7244b104f50013562d7, type: 3}
+--- !u!4 &1444755848
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444755846}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 161.08185, y: 241.95596, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1455218786
 GameObject:
   m_ObjectHideFlags: 0
@@ -4852,7 +4905,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1889564197
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42328,3 +42381,4 @@ SceneRoots:
   - {fileID: 1682559340}
   - {fileID: 3243306803388679911}
   - {fileID: 1181065809}
+  - {fileID: 1444755848}

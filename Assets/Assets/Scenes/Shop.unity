@@ -1081,9 +1081,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDataViewer
   playerProfile:
     level: 8
-    xp: 80
+    xp: 90
     xpToNext: 400
-    coins: 585
+    coins: 690
     maxHp: 170
   ownedCards:
   - cardId: BASIC-001
@@ -1118,15 +1118,27 @@ MonoBehaviour:
     cost: 2
     acquiredFrom: 0
     description: Deal {value} physical damage.
+  - cardId: NOR-002
+    cardName: Basic Guard
+    cardClass: 1
+    level: 1
+    quantity: 1
+    cost: 1
+    acquiredFrom: 2
+    description: Gain {value} armor.
   activeDeck:
   - BASIC-001
   - BASIC-002
   - BASIC-003
   - NOR-001
+  - NOR-002
   acquisitionHistory:
   - cardId: NOR-001
     source: 1
     timestamp: 2026-11-23 13:54:48
+  - cardId: NOR-002
+    source: 2
+    timestamp: 2026-11-23 14:07:34
   debugCardIdToAdd: NOR-001
   debugSource: 1
   debugCardLevel: 1
@@ -1713,7 +1725,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
 --- !u!4 &418651773 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7765402420200854475, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9147481974756281230, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
   m_PrefabInstance: {fileID: 418651772}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &425964964
@@ -1941,7 +1953,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436204972}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2669006, y: -0.07641789, z: 0.021235757, w: 0.9604548}
+  m_LocalRotation: {x: 0.21214107, y: -0.08617096, z: 0.018782815, w: 0.9732512}
   m_LocalPosition: {x: 0.72, y: 1.76, z: -15.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4095,7 +4107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1089657406}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26690063, y: -0.0764179, z: 0.02123576, w: 0.9604548}
+  m_LocalRotation: {x: 0.21214107, y: -0.08617095, z: 0.018782819, w: 0.9732513}
   m_LocalPosition: {x: 0.72, y: 1.76, z: -15.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -3596,11 +3596,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDataViewer
   playerProfile:
-    level: 4
-    xp: 118
-    xpToNext: 200
-    coins: 178
-    maxHp: 130
+    level: 8
+    xp: 90
+    xpToNext: 400
+    coins: 690
+    maxHp: 170
   ownedCards:
   - cardId: BASIC-001
     cardName: Basic Attack
@@ -3630,7 +3630,7 @@ MonoBehaviour:
     cardName: Heavy Attack
     cardClass: 1
     level: 1
-    quantity: 6
+    quantity: 2
     cost: 2
     acquiredFrom: 0
     description: Deal {value} physical damage.
@@ -3638,68 +3638,23 @@ MonoBehaviour:
     cardName: Basic Guard
     cardClass: 1
     level: 1
-    quantity: 6
-    cost: 1
-    acquiredFrom: 0
-    description: Gain {value} armor.
-  - cardId: MAG-001
-    cardName: Fireball
-    cardClass: 3
-    level: 1
-    quantity: 2
-    cost: 2
-    acquiredFrom: 0
-    description: Deal {value} magic damage.
-  - cardId: BER-001
-    cardName: Bloodthirst
-    cardClass: 5
-    level: 1
     quantity: 1
-    cost: 2
-    acquiredFrom: 0
-    description: Deal {value} direct HP damage. Restore {secondary} HP.
+    cost: 1
+    acquiredFrom: 2
+    description: Gain {value} armor.
   activeDeck:
   - BASIC-001
   - BASIC-002
   - BASIC-003
   - NOR-001
   - NOR-002
-  - MAG-001
-  - BER-001
   acquisitionHistory:
   - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 21:46:02
+    source: 1
+    timestamp: 2026-11-23 13:54:48
   - cardId: NOR-002
     source: 2
-    timestamp: 2026-11-23 21:49:45
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 21:54:41
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 21:58:49
-  - cardId: MAG-001
-    source: 2
-    timestamp: 2026-11-23 22:01:46
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 22:32:00
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 22:39:56
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 22:44:20
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 23:23:31
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 23:28:17
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 23:32:30
+    timestamp: 2026-11-23 14:07:34
   debugCardIdToAdd: NOR-001
   debugSource: 1
   debugCardLevel: 1

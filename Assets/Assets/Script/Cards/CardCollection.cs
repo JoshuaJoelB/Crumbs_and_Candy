@@ -37,6 +37,21 @@ public static class CardCollection
         return PlayerCardData.GetAllAcquiredCards();
     }
 
+    public static bool CanUpgradeCard(string cardId)
+    {
+        return PlayerCardData.CanUpgradeCard(cardId);
+    }
+
+    public static bool UpgradeCard(string cardId, int coinCost)
+    {
+        return PlayerCardData.UpgradeCard(cardId, coinCost);
+    }
+
+    public static List<PlayerCardEntry> GetUpgradeableCards()
+    {
+        return PlayerCardData.GetUpgradeableCards();
+    }
+
     public static List<CardInstance> GetCardInstances()
     {
         return PlayerCardData.GetInventoryCardInstances();

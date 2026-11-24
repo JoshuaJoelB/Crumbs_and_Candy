@@ -321,13 +321,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1860144573480233983, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740428051593198294, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4012031980828126300, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4485851924795866356, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
       propertyPath: m_LocalPosition.x
       value: 439.23166
       objectReference: {fileID: 0}
     - target: {fileID: 4485851924795866356, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -24.75
+      value: -25.143
       objectReference: {fileID: 0}
     - target: {fileID: 4485851924795866356, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
       propertyPath: m_LocalPosition.z
@@ -374,7 +386,13 @@ PrefabInstance:
       addedObject: {fileID: 1167580643}
     - targetCorrespondingSourceObject: {fileID: 7089108015343504852, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1167580642}
+      addedObject: {fileID: 1167580646}
+    - targetCorrespondingSourceObject: {fileID: 7089108015343504852, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1167580645}
+    - targetCorrespondingSourceObject: {fileID: 8483007976936001844, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1989425302}
   m_SourcePrefab: {fileID: 100100000, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
 --- !u!1001 &514148228
 PrefabInstance:
@@ -569,33 +587,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7089108015343504852, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
   m_PrefabInstance: {fileID: 325787392}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1167580642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1167580641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f5b28caf4540044288a2a024ca6876d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
-  animator: {fileID: 1167580643}
-  playerMovement: {fileID: 1989425298}
-  characterController: {fileID: 1989425299}
-  speedParameter: Speed
-  isMovingParameter: isMoving
-  isWalkingParameter: isWalking
-  horizontalParameter: Horizontal
-  verticalParameter: Vertical
-  isGroundedParameter: isGrounded
-  dampTime: 0.1
-  movementThreshold: 0.05
-  currentSpeed: 0
-  currentIsMoving: 0
-  currentDirection: {x: 0, y: 0}
-  currentIsGrounded: 1
 --- !u!95 &1167580643
 Animator:
   serializedVersion: 7
@@ -618,6 +609,46 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1167580645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167580641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5b28caf4540044288a2a024ca6876d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
+  animator: {fileID: 1167580643}
+  playerMovement: {fileID: 0}
+  speedParameter: Speed
+--- !u!143 &1167580646
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167580641}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1428205067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -679,6 +710,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 883a9c794ea683543b22bda661419db1, type: 3}
+--- !u!1 &1449093175 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8483007976936001844, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
+  m_PrefabInstance: {fileID: 325787392}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1616228541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2201,22 +2237,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1989425298 stripped
+--- !u!114 &1989425302
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1441629243786958085, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
-  m_PrefabInstance: {fileID: 325787392}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1449093175}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ee9bb560425634e8ed87d0eee22f5d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f5b28caf4540044288a2a024ca6876d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
---- !u!143 &1989425299 stripped
-CharacterController:
-  m_CorrespondingSourceObject: {fileID: 2740428051593198294, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
-  m_PrefabInstance: {fileID: 325787392}
-  m_PrefabAsset: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
+  animator: {fileID: 1167580643}
+  playerMovement: {fileID: 0}
+  speedParameter: Speed
 --- !u!1001 &7987811265830104022
 PrefabInstance:
   m_ObjectHideFlags: 0

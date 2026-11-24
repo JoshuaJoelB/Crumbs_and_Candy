@@ -526,9 +526,9 @@ MonoBehaviour:
     level: 8
     xp: 140
     xpToNext: 400
-    coins: 590
+    coins: 560
     maxHp: 170
-  totalOwnedCards: 6
+  totalOwnedCards: 8
   totalUpgradedCards: 5
   maxLevelCards: 4
   ownedCards:
@@ -604,6 +604,30 @@ MonoBehaviour:
     cost: 2
     acquiredFrom: 2
     description: Deal {value} magic damage.
+  - cardDisplayName: '[Level 1] Prankster (TRI-002)'
+    cardId: TRI-002
+    cardName: Prankster
+    level: 1
+    maxLevel: 2
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 4
+    quantity: 1
+    cost: 1
+    acquiredFrom: 1
+    description: Add {value} Junk Card(s) to opponent's deck.
+  - cardDisplayName: '[Level 1] Counter (TRI-001)'
+    cardId: TRI-001
+    cardName: Counter
+    level: 1
+    maxLevel: 2
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 4
+    quantity: 1
+    cost: 2
+    acquiredFrom: 1
+    description: Counter next attack. Draw {value} card(s).
   activeDeck:
   - '[Level 3] Basic Attack (BASIC-001) [MAX]'
   - '[Level 3] Basic Guard (BASIC-002) [MAX]'
@@ -611,6 +635,8 @@ MonoBehaviour:
   - '[Level 2] Heavy Attack (NOR-001) [MAX]'
   - '[Level 1] Basic Guard (NOR-002)'
   - '[Level 2] Fireball (MAG-001) [MAX]'
+  - '[Level 1] Prankster (TRI-002)'
+  - '[Level 1] Counter (TRI-001)'
   acquisitionHistory:
   - cardId: NOR-001
     source: 1
@@ -630,6 +656,12 @@ MonoBehaviour:
   - cardId: BASIC-001
     source: 1
     timestamp: 2026-11-24 18:17:08
+  - cardId: TRI-002
+    source: 1
+    timestamp: 2026-11-24 18:33:08
+  - cardId: TRI-001
+    source: 1
+    timestamp: 2026-11-24 18:44:34
   shopCurrentOfferings:
   - '[Shop is CLOSED]'
   - "Heavy Attack (NOR-001) \u2014 20 coins [OWNED]"
@@ -638,8 +670,8 @@ MonoBehaviour:
   - "Pierce (WAR-002) \u2014 20 coins"
   - "Fireball (MAG-001) \u2014 20 coins [OWNED]"
   - "Frost Bind (MAG-002) \u2014 20 coins"
-  - "Counter (TRI-001) \u2014 20 coins"
-  - "Prankster (TRI-002) \u2014 10 coins"
+  - "Counter (TRI-001) \u2014 20 coins [OWNED]"
+  - "Prankster (TRI-002) \u2014 10 coins [OWNED]"
   - "Bloodthirst (BER-001) \u2014 20 coins"
   - "Rampage (BER-002) \u2014 30 coins"
   shopItemsAvailable: 10
@@ -1701,6 +1733,135 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &823331153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 823331155}
+  - component: {fileID: 823331154}
+  m_Layer: 0
+  m_Name: BG Music
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &823331154
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823331153}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 7ac33a11aaf755243a7771cef5d621be, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &823331155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823331153}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 192.07, y: -13.05, z: 780.295}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &853104599 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8483007976936001844, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
@@ -3714,3 +3875,4 @@ SceneRoots:
   - {fileID: 1319176475}
   - {fileID: 774620476}
   - {fileID: 244787630}
+  - {fileID: 823331155}

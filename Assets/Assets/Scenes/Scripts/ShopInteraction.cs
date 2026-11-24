@@ -1,8 +1,17 @@
 using UnityEngine;
 
+/// <summary>
+/// Trigger-based interaction for the shop NPC / area.
+/// When the player enters range and presses Q, opens the ShopManager.
+/// </summary>
 public class ShopInteraction : MonoBehaviour
 {
     [Header("Shop Reference")]
+    [Tooltip("Assign the GameObject that has the ShopManager component.")]
+    public ShopManager shopManager;
+
+    [Header("Legacy Fallback (optional)")]
+    [Tooltip("If ShopManager is not assigned, falls back to the old ShopUI.")]
     public ShopUI shopUI;
 
     private bool playerInRange;
@@ -11,7 +20,18 @@ public class ShopInteraction : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.Q))
         {
-            shopUI.OpenShop();
+            if (shopManager != null)
+            {
+                shopManager.OpenShop();
+            }
+            else if (shopUI != null)
+            {
+                shopUI.OpenShop();
+            }
+            else
+            {
+                Debug.LogWarning("[ShopInteraction] No ShopManager or ShopUI assigned!");
+            }
         }
     }
 

@@ -96,6 +96,11 @@ public class PlayerDataViewer : MonoBehaviour
     [Tooltip("Log of all card acquisitions and where they came from.")]
     public List<CardAcquisitionLog> acquisitionHistory = new List<CardAcquisitionLog>();
 
+    [Header("----- SHOP STATUS -----")]
+    [Tooltip("Current shop offerings visible in the inspector.")]
+    public List<string> shopCurrentOfferings = new List<string>();
+    public int shopItemsAvailable = 0;
+
     [Header("----- DEBUG CHEAT TOOLS -----")]
     [Tooltip("Type any Card ID here to test acquiring or upgrading via the Context Menu / Inspector buttons.")]
     public string debugCardId = "BASIC-001";
@@ -108,15 +113,26 @@ public class PlayerDataViewer : MonoBehaviour
     {
         RefreshViewer();
         PlayerCardData.OnCardDataChanged += RefreshViewer;
+        ShopManager.OnItemPurchased += OnShopPurchase;
     }
 
     void OnDisable()
     {
         PlayerCardData.OnCardDataChanged -= RefreshViewer;
+        ShopManager.OnItemPurchased -= OnShopPurchase;
     }
 
     void Start()
     {
+        RefreshViewer();
+    }
+
+    /// <summary>
+    /// Called when a card is purchased from the shop. Auto-refreshes the viewer.
+    /// </summary>
+    private void OnShopPurchase(string cardId)
+    {
+        Debug.Log($"[PlayerDataViewer] Shop purchase detected: {cardId}. Refreshing viewer.");
         RefreshViewer();
     }
 
@@ -175,6 +191,41 @@ public class PlayerDataViewer : MonoBehaviour
 
         // 4. Refresh History
         acquisitionHistory = PlayerCardData.GetAcquisitionHistory();
+
+        // 5. Refresh Shop Status
+        RefreshShopStatus();
+    }
+
+    /// <summary>
+    /// Updates the shop status section of the inspector.
+    /// Shows current offerings from any active ShopManager in the scene.
+    /// </summary>
+    private void RefreshShopStatus()
+    {
+        shopCurrentOfferings.Clear();
+        shopItemsAvailable = 0;
+
+        // Count total available shop items from ShopDatabase
+        var allShopItems = ShopDatabase.GetAvailableItems();
+        shopItemsAvailable = allShopItems.Count;
+
+        // If a ShopManager is active in scene, show its current offerings
+        ShopManager shopMgr = FindObjectOfType<ShopManager>();
+        if (shopMgr != null && shopMgr.IsOpen)
+        {
+            shopCurrentOfferings.Add("[Shop is OPEN]");
+        }
+        else
+        {
+            shopCurrentOfferings.Add("[Shop is CLOSED]");
+        }
+
+        // List all shop-available cards with ownership status
+        foreach (var item in allShopItems)
+        {
+            string owned = PlayerCardData.OwnsCard(item.cardId) ? " [OWNED]" : "";
+            shopCurrentOfferings.Add($"{item.CardName} ({item.cardId}) — {item.price} coins{owned}");
+        }
     }
 
     /// <summary>

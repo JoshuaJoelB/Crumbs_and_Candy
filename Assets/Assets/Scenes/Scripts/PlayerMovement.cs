@@ -26,6 +26,11 @@ public class PlayerMovement : MonoBehaviour
     private float targetYaw;
     private float currentYawVelocity;
 
+    public CharacterController Controller => controller;
+    public Vector3 CurrentInput { get; private set; }
+    public bool IsMoving => CurrentInput.sqrMagnitude > 0.001f;
+    public float MoveSpeed => moveSpeed;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -51,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         UnlockCursor();
+        CurrentInput = Vector3.zero;
     }
 
     private void Update()
@@ -168,6 +174,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector3 input = Vector3.ClampMagnitude(new Vector3(x, 0f, z), 1f);
+        CurrentInput = input;
 
         if (controller != null)
         {

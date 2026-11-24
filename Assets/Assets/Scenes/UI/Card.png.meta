@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 782b6295dd8f01846a61af4bdd9761d7
+guid: 4f9644ba91704d0478de1a6078eb3f64
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1872956865249672718
-    second: Stamina_0
+      213: -4457850898058260020
+    second: Card_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -102,13 +102,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Stamina_0
+      name: Card_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 720
-        height: 719
+        width: 140
+        height: 196
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -117,8 +117,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e0ef5d878541ef910800000000000000
-      internalID: 1872956865249672718
+      spriteID: cc1d4971a388222c0800000000000000
+      internalID: -4457850898058260020
       vertices: []
       indices: 
       edges: []
@@ -137,7 +137,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Stamina_0: 1872956865249672718
+      Card_0: -4457850898058260020
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -13,6 +13,8 @@ public class ShopUI : MonoBehaviour
     private void Start()
     {
         if (shopPanel != null) shopPanel.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void OpenShop()
@@ -31,6 +33,14 @@ public class ShopUI : MonoBehaviour
         Cursor.visible = true;
     }
 
+    private void Update()
+    {
+        if (isOpen && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseShop();
+        }
+    }
+
     public void CloseShop()
     {
         if (!isOpen) return;
@@ -39,17 +49,12 @@ public class ShopUI : MonoBehaviour
 
         if (shopPanel != null) shopPanel.SetActive(false);
 
-        // Restore player movement
         if (playerMovement != null) playerMovement.enabled = true;
 
-        // Return to gameplay cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    /// <summary>
-    /// Purchases a card from the shop, deducting coins and recording the acquisition in PlayerCardData.
-    /// </summary>
     public bool BuyCard(string cardId, int price)
     {
         if (PlayerProfile.coins < price)
@@ -66,10 +71,6 @@ public class ShopUI : MonoBehaviour
         return success;
     }
 
-    /// <summary>
-    /// Single-string parameter method visible in Unity Button OnClick() dropdown!
-    /// Format: "CARD_ID,PRICE" (e.g. "NOR-001,20" or "MAG-001,35")
-    /// </summary>
     public void BuyCardString(string cardIdAndPrice)
     {
         if (string.IsNullOrEmpty(cardIdAndPrice)) return;

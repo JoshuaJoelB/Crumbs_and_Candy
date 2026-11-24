@@ -33,7 +33,19 @@ EditorBuildSettings:
     path: Assets/Assets/Scenes/ExplorationScene.unity
     guid: 9562a529c682cee449c6472c6ba45a7f
   - enabled: 1
-    path: Assets/Assets/Scenes/BattleScene.unity
+    path: Assets/Assets/Scenes/BattleScene/ScarecrowBattleScene.unity
     guid: 8f3a7c575320a1947b6b262f3b236652
+  - enabled: 1
+    path: Assets/Assets/Scenes/BattleScene/PorcelainDollBattleScene.unity
+    guid: ac0bf1f303bcd804c8e807f41ed54f7a
+  - enabled: 1
+    path: Assets/Assets/Scenes/BattleScene/WerewolfBattleScene.unity
+    guid: 64ef1ccd4d0dd834592f7401e8c4b20e
+  - enabled: 1
+    path: Assets/Assets/Scenes/BattleScene/WillOWispBattleScene.unity
+    guid: 758cfa6d3d7e7e7408a6db053220a162
+  - enabled: 1
+    path: Assets/Assets/Scenes/BattleScene/WitchBattleScene.unity
+    guid: 6ca188a97dd18474689cf4a63cf47f27
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

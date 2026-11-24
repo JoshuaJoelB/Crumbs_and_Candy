@@ -16,7 +16,7 @@ public class BattleManager : MonoBehaviour
     
     [Header("Card UI (Drag these from Hierarchy)")]
     public Transform handContainer;    
-    public CardUI cardPrefab;
+    public CardUI cardPrefab;          // Fallback prefab
     public TMP_Text deckCountText;     
     public TMP_Text discardCountText;  
     public Button endTurnButton;
@@ -24,12 +24,18 @@ public class BattleManager : MonoBehaviour
     [Header("Text & Bars")]
     public TMP_Text playerStatsText;
     public TMP_Text enemyStatsText;
+    public TMP_Text enemyArmorText; 
     public TMP_Text turnIndicatorText; 
 
     public StatBar playerHpBar;
     public StatBar playerManaBar;
     public StatBar enemyHpBar;
     public StatBar enemyManaBar;
+
+    [Header("Damage Popups")]
+    public DamagePopup damagePopupPrefab;
+    public RectTransform playerPopupPos; // UI Anchor kung saan lalabas ang damage ng Player
+    public RectTransform enemyPopupPos;  // UI Anchor kung saan lalabas ang damage ng Enemy
 
     [Header("Victory / Defeat UI")]
     public VictoryRewardUI victoryUI;
@@ -78,7 +84,6 @@ public class BattleManager : MonoBehaviour
         StartBattle(BattleTransfer.enemyId);
     }
 
-    // --- NAG-SYNC NG INSPECTOR PERO TUMITIGIL KAPAG TAPOS NA ANG LABAN ---
     void Update()
     {
         if (state == State.Inactive || state == State.Ended || GameStatsManager.Instance == null || player == null || enemy == null) return;
@@ -146,22 +151,17 @@ public class BattleManager : MonoBehaviour
         if (state != State.Inactive) return false;
         enemyData = EnemyDatabase.Get(enemyId);
 
-        startingDeck = new List<CardInstance>();
-        List<string> ownedCardIds = CardCollection.GetOwnedCards();
-
-        if (ownedCardIds.Count == 0)
+        // Player Deck from PlayerCardData system
+        startingDeck = PlayerCardData.GetDeckCardInstances();
+        
+        if (startingDeck.Count == 0) // Fallback
         {
-            CardCollection.AddCard("BASIC-001");
-            CardCollection.AddCard("BASIC-002");
-            CardCollection.AddCard("BASIC-003");
-            ownedCardIds = CardCollection.GetOwnedCards();
-        }
-
-        foreach (string id in ownedCardIds)
-        {
-            int lvl = CardCollection.GetLevel(id);
-            startingDeck.Add(new CardInstance(CardDatabase.Get(id), lvl));
-            startingDeck.Add(new CardInstance(CardDatabase.Get(id), lvl));
+            startingDeck.Add(new CardInstance(CardDatabase.Get("BASIC-001")));
+            startingDeck.Add(new CardInstance(CardDatabase.Get("BASIC-001")));
+            startingDeck.Add(new CardInstance(CardDatabase.Get("BASIC-002")));
+            startingDeck.Add(new CardInstance(CardDatabase.Get("BASIC-002")));
+            startingDeck.Add(new CardInstance(CardDatabase.Get("BASIC-003")));
+            startingDeck.Add(new CardInstance(CardDatabase.Get("BASIC-003")));
         }
 
         enemyDeck.Clear();
@@ -211,20 +211,43 @@ public class BattleManager : MonoBehaviour
     {
         CardData c = card.data;
         int v = card.Value, s = card.Secondary, t = card.Tertiary;
+        int damageDealt = 0;
 
         switch (c.effect)
         {
-            case CardEffectType.Damage: case CardEffectType.MagicDamage: enemy.TakeDamage(v); break;
-            case CardEffectType.DirectHpDamage: enemy.TakeDirectDamage(v); if (s > 0) player.Heal(s); break;
+            case CardEffectType.Damage: 
+            case CardEffectType.MagicDamage: 
+                damageDealt = v;
+                enemy.TakeDamage(v); 
+                break;
+            case CardEffectType.DirectHpDamage: 
+                damageDealt = v;
+                enemy.TakeDirectDamage(v); 
+                if (s > 0) player.Heal(s); 
+                break;
             case CardEffectType.Armor: player.armor += v; break;
             case CardEffectType.RestoreMana: player.RestoreStamina(v); break;
             case CardEffectType.RestoreHp: player.Heal(v); break;
-            case CardEffectType.ReduceNextAttack: case CardEffectType.DamageAndReduce: enemy.TakeDamage(v); enemy.attackReduction += s; break;
-            case CardEffectType.MultiHit: for (int i = 0; i < t && enemy.hp > 0; i++) enemy.TakeDamage(v); break;
+            case CardEffectType.ReduceNextAttack: 
+            case CardEffectType.DamageAndReduce: 
+                damageDealt = v;
+                enemy.TakeDamage(v); 
+                enemy.attackReduction += s; 
+                break;
+            case CardEffectType.MultiHit: 
+                damageDealt = v * t;
+                for (int i = 0; i < t && enemy.hp > 0; i++) enemy.TakeDamage(v); 
+                break;
             case CardEffectType.NullifyNextCard: enemy.parryBlock = true; if (v > 0) flow.Draw(v); break;
             case CardEffectType.CounterNextAttack: enemy.counterIncoming = true; if (v > 0) flow.Draw(v); break;
             case CardEffectType.AddJunkCards: enemy.junkToAdd += v; break;
             case CardEffectType.ArmorAndDraw: player.armor += v; if (s > 0) flow.Draw(s); break;
+        }
+
+        // MAG-SPAWN NG DAMAGE POPUP SA ENEMY POSITION
+        if (damageDealt > 0)
+        {
+            SpawnDamagePopup(damageDealt, enemyPopupPos);
         }
     }
 
@@ -232,7 +255,7 @@ public class BattleManager : MonoBehaviour
     {
         if (state != State.PlayerTurn) return;
         flow.PurgeJunkFromHand();
-        flow.EnforceHandLimit(3); // <-- BAGONG LOGIC PARA SA 3 CARD LIMIT
+        flow.EnforceHandLimit(3); // 3 card limit
         state = State.EnemyTurn;
         Refresh();
         StartCoroutine(EnemyTurn());
@@ -277,23 +300,10 @@ public class BattleManager : MonoBehaviour
     void SetEnemyIntentLogic()
     {
         previewedEnemyCard = null;
-
-        if (enemyUniqueCard != null && enemy.stamina >= enemyUniqueCard.data.cost)
-        {
-            previewedEnemyCard = enemyUniqueCard;
-            return;
-        }
-
+        if (enemyUniqueCard != null && enemy.stamina >= enemyUniqueCard.data.cost) { previewedEnemyCard = enemyUniqueCard; return; }
         if (enemyDeck.Count > 0)
         {
-            foreach (var card in enemyDeck)
-            {
-                if (enemy.stamina >= card.data.cost)
-                {
-                    previewedEnemyCard = card;
-                    return;
-                }
-            }
+            foreach (var card in enemyDeck) if (enemy.stamina >= card.data.cost) { previewedEnemyCard = card; return; }
             previewedEnemyCard = enemyDeck[0]; 
         }
         else
@@ -328,6 +338,7 @@ public class BattleManager : MonoBehaviour
     {
         int v = card.Value;
         int s = card.Secondary;
+        int damageDealt = 0;
 
         switch (card.data.effect)
         {
@@ -336,7 +347,7 @@ public class BattleManager : MonoBehaviour
                 {
                     int dmg = enemy.ResolveOutgoingAttack(v);
                     if (enemy.counterIncoming) { enemy.counterIncoming = false; enemy.TakeDirectDamage(dmg); }
-                    else player.TakeDamage(dmg);
+                    else { player.TakeDamage(dmg); damageDealt = dmg; }
                     player.armor = 0;
                 }
                 break;
@@ -346,7 +357,7 @@ public class BattleManager : MonoBehaviour
                 {
                     int dmg = enemy.ResolveOutgoingAttack(v);
                     if (enemy.counterIncoming) { enemy.counterIncoming = false; enemy.TakeDirectDamage(dmg); }
-                    else player.TakeDirectDamage(dmg);
+                    else { player.TakeDirectDamage(dmg); damageDealt = dmg; }
                     if (s > 0) enemy.Heal(s);
                 }
                 break;
@@ -355,7 +366,7 @@ public class BattleManager : MonoBehaviour
                 {
                     int dmg = enemy.ResolveOutgoingAttack(v);
                     if (enemy.counterIncoming) { enemy.counterIncoming = false; enemy.TakeDirectDamage(dmg); }
-                    else player.TakeDamage(dmg);
+                    else { player.TakeDamage(dmg); damageDealt = dmg; }
                     player.attackReduction += s;
                     player.armor = 0;
                 }
@@ -363,20 +374,29 @@ public class BattleManager : MonoBehaviour
 
             case CardEffectType.ArmorAndDraw: enemy.armor += v; break;
             case CardEffectType.Armor: enemy.armor += v; break; 
-            case CardEffectType.MultiHit: for(int i=0; i<card.Tertiary; i++) player.TakeDamage(card.Value); break;
+            case CardEffectType.MultiHit: 
+                for(int i=0; i<card.Tertiary; i++) { player.TakeDamage(card.Value); damageDealt += card.Value; }
+                break;
             case CardEffectType.ReduceNextAttack:
                 int dmgFrost = enemy.ResolveOutgoingAttack(v);
                 player.TakeDamage(dmgFrost);
+                damageDealt = dmgFrost;
                 player.attackReduction += s;
                 player.armor = 0;
                 break;
+        }
+
+        // MAG-SPAWN NG DAMAGE POPUP SA PLAYER POSITION
+        if (damageDealt > 0)
+        {
+            SpawnDamagePopup(damageDealt, playerPopupPos);
         }
     }
 
     void EndBattle(bool victory)
     {
         if (state == State.Ended || state == State.Inactive) return;
-        state = State.Ended; // <-- ITO ANG PUMIPIGIL SA CONFLICT
+        state = State.Ended; 
         lastVictory = victory;
 
         if (victory)
@@ -391,7 +411,6 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Victory UI is NULL! Check Inspector.");
                 battlePanel.SetActive(false);
                 StartCoroutine(ReturnToExploration());
             }
@@ -429,6 +448,24 @@ public class BattleManager : MonoBehaviour
         SceneManager.LoadScene(BattleTransfer.explorationScene);
     }
 
+    // BAGONG SPAWN LOGIC PARA SA UI ANCHORS
+    void SpawnDamagePopup(int damage, RectTransform spawnPos)
+    {
+        if (damagePopupPrefab != null && spawnPos != null)
+        {
+            DamagePopup popup = Instantiate(damagePopupPrefab, spawnPos.position, Quaternion.identity);
+            
+            // Gawing anak ng Canvas para mag-pwesto nang tama
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false); 
+            
+            // I-set ang position gamit ang UI RectTransform position
+            popup.GetComponent<RectTransform>().position = spawnPos.position;
+
+            bool isPlayer = (spawnPos == playerPopupPos);
+            popup.Setup(damage, isPlayer);
+        }
+    }
+
     void Refresh()
     {
         if (handContainer != null)
@@ -441,20 +478,39 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        if (cardPrefab != null && flow.hand != null)
+        if (flow.hand != null)
         {
             foreach (CardInstance c in flow.hand)
             {
-            CardClass cClass = c.data.cardClass;
-            CardUI prefabToUse = CardPrefabManager.Instance.GetPrefab(c.data.cardClass, c.data.id);
-            CardUI ui = Instantiate(prefabToUse, handContainer);
-ui.Setup(c, OnCardClicked);
-                ui.Setup(c, OnCardClicked);
+                CardUI prefabToUse = cardPrefab;
+                if (CardPrefabManager.Instance != null)
+                    prefabToUse = CardPrefabManager.Instance.GetPrefab(c.data.cardClass, c.data.id);
+
+                if (prefabToUse != null)
+                {
+                    CardUI ui = Instantiate(prefabToUse, handContainer);
+                    ui.Setup(c, OnCardClicked);
+                }
             }
         }
 
         if (playerStatsText != null) playerStatsText.text = $"PLAYER Lv {PlayerProfile.level}\nArmor {player.armor}\nXP {PlayerProfile.xp}/{PlayerProfile.XpToNext}\nCoins {PlayerProfile.coins}";
-        if (enemyStatsText != null) enemyStatsText.text = $"{enemyData.enemyName} ({enemyData.difficulty})";
+        if (enemyStatsText != null) 
+            enemyStatsText.text = $"{enemyData.enemyName} ({enemyData.difficulty})";
+
+        //ARMOR
+        if (enemyArmorText != null)
+        {
+            if (enemy.armor > 0)
+            {
+                enemyArmorText.text = "Armor: " + enemy.armor;
+                enemyArmorText.gameObject.SetActive(true); // Ipakita kung may armor
+            }
+            else
+            {
+                enemyArmorText.gameObject.SetActive(false); // Itago kung 0 armor
+            }
+        }
         if (turnIndicatorText != null) turnIndicatorText.text = (state == State.PlayerTurn) ? "Player Turn" : "Enemy Turn";
 
         if (deckCountText != null) deckCountText.text = "Draw: " + flow.deck.Count;
@@ -467,11 +523,9 @@ ui.Setup(c, OnCardClicked);
 
         if (endTurnButton != null) endTurnButton.interactable = (state == State.PlayerTurn);
 
-        // --- SYNC TO INSPECTOR (Ito ang nagpapakita ng stats sa GameStatsManager) ---
         if (GameStatsManager.Instance != null && player != null && enemy != null)
         {
             var gm = GameStatsManager.Instance;
-            
             gm.handCards = flow.hand.Count;
             gm.drawCards = flow.deck.Count;
             gm.discardCards = flow.discard.Count;
@@ -500,7 +554,6 @@ ui.Setup(c, OnCardClicked);
             lastSyncedHand = gm.handCards;
             lastSyncedDraw = gm.drawCards;
             lastSyncedDiscard = gm.discardCards;
-
             lastPlayerHp = gm.playerStats.hp;
             lastPlayerMaxHp = gm.playerStats.maxHp;
             lastPlayerMana = gm.playerStats.stamina;

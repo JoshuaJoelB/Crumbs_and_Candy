@@ -12,11 +12,11 @@
 
 ## About the Game
 
-**Crumbs & Candy** is a 3D escape adventure inspired by the classic fairy tale *Hansel and Gretel*.
+**Crumbs & Candy** is a 3D escape adventure inspired by the classic fairy tale `Hansel and Gretel`.
 
 Combining **card-based combat, exploration, and resource management**, players must escape the Witch's house, survive a dangerous forest, and navigate branching paths to reach freedom.
 
-Every encounter is a challenge, and every decision brings players closer to—or further away from—their escape.
+Every encounter is a challenge, and every decision brings players closer to or further away from their escape.
 
 ## Game Progression
 
@@ -34,9 +34,9 @@ Explore the journey through the game's locations:
 | 8 | Final Boss |
 | 🏁 | Exit |
 
-## 🛠️ Third-Party Packages
+### Third-Party Packages:
 
-The project uses Unity's Package Manager to integrate additional tools and functionality.
+> The project uses Unity's Package Manager to integrate additional tools and functionality.
 
 | Package | Purpose |
 |---|---|

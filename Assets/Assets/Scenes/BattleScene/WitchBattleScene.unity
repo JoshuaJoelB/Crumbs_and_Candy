@@ -435,6 +435,135 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172238110}
   m_CullTransparentMesh: 1
+--- !u!1 &210473460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 210473462}
+  - component: {fileID: 210473461}
+  m_Layer: 0
+  m_Name: BG Music
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &210473461
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210473460}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 143f4d9bd91fa8046a9079428d233cd1, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &210473462
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210473460}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 192.07, y: -13.05, z: 780.295}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &236441396
 GameObject:
   m_ObjectHideFlags: 0
@@ -3536,111 +3665,159 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDataViewer
   playerProfile:
-    level: 4
-    xp: 118
-    xpToNext: 200
-    coins: 178
-    maxHp: 130
+    level: 8
+    xp: 140
+    xpToNext: 400
+    coins: 560
+    maxHp: 170
+  totalOwnedCards: 8
+  totalUpgradedCards: 5
+  maxLevelCards: 4
   ownedCards:
-  - cardId: BASIC-001
+  - cardDisplayName: '[Level 3] Basic Attack (BASIC-001) [MAX LEVEL]'
+    cardId: BASIC-001
     cardName: Basic Attack
+    level: 3
+    maxLevel: 3
+    isUpgraded: 1
+    isMaxLevel: 1
     cardClass: 0
-    level: 1
-    quantity: 1
+    quantity: 4
     cost: 0
     acquiredFrom: 0
     description: Deal {value} physical damage.
-  - cardId: BASIC-002
+  - cardDisplayName: '[Level 3] Basic Guard (BASIC-002) [MAX LEVEL]'
+    cardId: BASIC-002
     cardName: Basic Guard
+    level: 3
+    maxLevel: 3
+    isUpgraded: 1
+    isMaxLevel: 1
     cardClass: 0
-    level: 1
     quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Gain {value} armor.
-  - cardId: BASIC-003
+  - cardDisplayName: '[Level 2] Basic Mana (BASIC-003) [UPGRADED +1]'
+    cardId: BASIC-003
     cardName: Basic Mana
+    level: 2
+    maxLevel: 3
+    isUpgraded: 1
+    isMaxLevel: 0
     cardClass: 0
-    level: 1
     quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Restore {value} mana.
-  - cardId: NOR-001
+  - cardDisplayName: '[Level 2] Heavy Attack (NOR-001) [MAX LEVEL]'
+    cardId: NOR-001
     cardName: Heavy Attack
+    level: 2
+    maxLevel: 2
+    isUpgraded: 1
+    isMaxLevel: 1
     cardClass: 1
-    level: 1
-    quantity: 6
-    cost: 2
-    acquiredFrom: 0
-    description: Deal {value} physical damage.
-  - cardId: NOR-002
-    cardName: Basic Guard
-    cardClass: 1
-    level: 1
-    quantity: 6
-    cost: 1
-    acquiredFrom: 0
-    description: Gain {value} armor.
-  - cardId: MAG-001
-    cardName: Fireball
-    cardClass: 3
-    level: 1
     quantity: 2
     cost: 2
     acquiredFrom: 0
-    description: Deal {value} magic damage.
-  - cardId: BER-001
-    cardName: Bloodthirst
-    cardClass: 5
+    description: Deal {value} physical damage.
+  - cardDisplayName: '[Level 1] Basic Guard (NOR-002)'
+    cardId: NOR-002
+    cardName: Basic Guard
     level: 1
+    maxLevel: 2
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 1
+    quantity: 1
+    cost: 1
+    acquiredFrom: 2
+    description: Gain {value} armor.
+  - cardDisplayName: '[Level 2] Fireball (MAG-001) [MAX LEVEL]'
+    cardId: MAG-001
+    cardName: Fireball
+    level: 2
+    maxLevel: 2
+    isUpgraded: 1
+    isMaxLevel: 1
+    cardClass: 3
     quantity: 1
     cost: 2
-    acquiredFrom: 0
-    description: Deal {value} direct HP damage. Restore {secondary} HP.
+    acquiredFrom: 2
+    description: Deal {value} magic damage.
+  - cardDisplayName: '[Level 1] Prankster (TRI-002)'
+    cardId: TRI-002
+    cardName: Prankster
+    level: 1
+    maxLevel: 2
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 4
+    quantity: 1
+    cost: 1
+    acquiredFrom: 1
+    description: Add {value} Junk Card(s) to opponent's deck.
+  - cardDisplayName: '[Level 1] Counter (TRI-001)'
+    cardId: TRI-001
+    cardName: Counter
+    level: 1
+    maxLevel: 2
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 4
+    quantity: 1
+    cost: 2
+    acquiredFrom: 1
+    description: Counter next attack. Draw {value} card(s).
   activeDeck:
-  - BASIC-001
-  - BASIC-002
-  - BASIC-003
-  - NOR-001
-  - NOR-002
-  - MAG-001
-  - BER-001
+  - '[Level 3] Basic Attack (BASIC-001) [MAX]'
+  - '[Level 3] Basic Guard (BASIC-002) [MAX]'
+  - '[Level 2] Basic Mana (BASIC-003) [UPGRADED +1]'
+  - '[Level 2] Heavy Attack (NOR-001) [MAX]'
+  - '[Level 1] Basic Guard (NOR-002)'
+  - '[Level 2] Fireball (MAG-001) [MAX]'
+  - '[Level 1] Prankster (TRI-002)'
+  - '[Level 1] Counter (TRI-001)'
   acquisitionHistory:
   - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 21:46:02
+    source: 1
+    timestamp: 2026-11-23 13:54:48
   - cardId: NOR-002
     source: 2
-    timestamp: 2026-11-23 21:49:45
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 21:54:41
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 21:58:49
+    timestamp: 2026-11-23 14:07:34
+  - cardId: BASIC-001
+    source: 1
+    timestamp: 2026-11-24 05:16:33
   - cardId: MAG-001
     source: 2
-    timestamp: 2026-11-23 22:01:46
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 22:32:00
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 22:39:56
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 22:44:20
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 23:23:31
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-23 23:28:17
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 23:32:30
-  debugCardIdToAdd: NOR-001
+    timestamp: 2026-11-24 12:30:26
+  - cardId: BASIC-001
+    source: 0
+    timestamp: 2026-11-24 18:16:59
+  - cardId: BASIC-001
+    source: 1
+    timestamp: 2026-11-24 18:17:08
+  - cardId: TRI-002
+    source: 1
+    timestamp: 2026-11-24 18:33:08
+  - cardId: TRI-001
+    source: 1
+    timestamp: 2026-11-24 18:44:34
+  shopCurrentOfferings:
+  - '[Shop is CLOSED]'
+  - "Heavy Attack (NOR-001) \u2014 20 coins [OWNED]"
+  - "Basic Guard (NOR-002) \u2014 10 coins [OWNED]"
+  - "Parry (WAR-001) \u2014 10 coins"
+  - "Pierce (WAR-002) \u2014 20 coins"
+  - "Fireball (MAG-001) \u2014 20 coins [OWNED]"
+  - "Frost Bind (MAG-002) \u2014 20 coins"
+  - "Counter (TRI-001) \u2014 20 coins [OWNED]"
+  - "Prankster (TRI-002) \u2014 10 coins [OWNED]"
+  - "Bloodthirst (BER-001) \u2014 20 coins"
+  - "Rampage (BER-002) \u2014 30 coins"
+  shopItemsAvailable: 10
+  debugCardId: BASIC-001
   debugSource: 1
   debugCardLevel: 1
 --- !u!1 &1181627288
@@ -42610,3 +42787,4 @@ SceneRoots:
   - {fileID: 1181065809}
   - {fileID: 1444755848}
   - {fileID: 1691914041}
+  - {fileID: 210473462}

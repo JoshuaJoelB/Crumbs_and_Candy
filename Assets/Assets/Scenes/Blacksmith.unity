@@ -870,8 +870,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261520776}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16976225, y: 0.42706773, z: -0.081981204, w: 0.8843489}
-  m_LocalPosition: {x: 327.88193, y: -23.630001, z: -15.715782}
+  m_LocalRotation: {x: 0.23435485, y: 0.41980007, z: -0.11314703, w: 0.8695076}
+  m_LocalPosition: {x: 325.8, y: -21.55, z: -17.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1048,55 +1048,78 @@ MonoBehaviour:
     level: 8
     xp: 90
     xpToNext: 400
-    coins: 690
+    coins: 615
     maxHp: 170
+  totalOwnedCards: 5
+  totalUpgradedCards: 1
+  maxLevelCards: 1
   ownedCards:
-  - cardId: BASIC-001
+  - cardDisplayName: '[Level 3] Basic Attack (BASIC-001) [MAX LEVEL]'
+    cardId: BASIC-001
     cardName: Basic Attack
+    level: 3
+    maxLevel: 3
+    isUpgraded: 1
+    isMaxLevel: 1
     cardClass: 0
-    level: 1
-    quantity: 1
+    quantity: 2
     cost: 0
     acquiredFrom: 0
     description: Deal {value} physical damage.
-  - cardId: BASIC-002
+  - cardDisplayName: '[Level 1] Basic Guard (BASIC-002)'
+    cardId: BASIC-002
     cardName: Basic Guard
-    cardClass: 0
     level: 1
+    maxLevel: 3
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 0
     quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Gain {value} armor.
-  - cardId: BASIC-003
+  - cardDisplayName: '[Level 1] Basic Mana (BASIC-003)'
+    cardId: BASIC-003
     cardName: Basic Mana
-    cardClass: 0
     level: 1
+    maxLevel: 3
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 0
     quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Restore {value} mana.
-  - cardId: NOR-001
+  - cardDisplayName: '[Level 1] Heavy Attack (NOR-001)'
+    cardId: NOR-001
     cardName: Heavy Attack
-    cardClass: 1
     level: 1
+    maxLevel: 2
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 1
     quantity: 2
     cost: 2
     acquiredFrom: 0
     description: Deal {value} physical damage.
-  - cardId: NOR-002
+  - cardDisplayName: '[Level 1] Basic Guard (NOR-002)'
+    cardId: NOR-002
     cardName: Basic Guard
-    cardClass: 1
     level: 1
+    maxLevel: 2
+    isUpgraded: 0
+    isMaxLevel: 0
+    cardClass: 1
     quantity: 1
     cost: 1
     acquiredFrom: 2
     description: Gain {value} armor.
   activeDeck:
-  - BASIC-001
-  - BASIC-002
-  - BASIC-003
-  - NOR-001
-  - NOR-002
+  - '[Level 3] Basic Attack (BASIC-001) [MAX]'
+  - '[Level 1] Basic Guard (BASIC-002)'
+  - '[Level 1] Basic Mana (BASIC-003)'
+  - '[Level 1] Heavy Attack (NOR-001)'
+  - '[Level 1] Basic Guard (NOR-002)'
   acquisitionHistory:
   - cardId: NOR-001
     source: 1
@@ -1104,7 +1127,10 @@ MonoBehaviour:
   - cardId: NOR-002
     source: 2
     timestamp: 2026-11-23 14:07:34
-  debugCardIdToAdd: NOR-001
+  - cardId: BASIC-001
+    source: 1
+    timestamp: 2026-11-24 05:16:33
+  debugCardId: BASIC-001
   debugSource: 1
   debugCardLevel: 1
 --- !u!4 &1287316828
@@ -1586,8 +1612,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1628611686}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16976227, y: 0.42706773, z: -0.08198118, w: 0.8843489}
-  m_LocalPosition: {x: 327.88193, y: -23.630001, z: -15.715782}
+  m_LocalRotation: {x: 0.23435487, y: 0.4198001, z: -0.11314702, w: 0.8695076}
+  m_LocalPosition: {x: 325.8, y: -21.55, z: -17.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1999,7 +2025,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2027637905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10150,7 +10176,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.8207026, z: -0, w: 0.57135576}
   m_LocalPosition: {x: 328.46, y: -27.6, z: -14.58}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_LocalScale: {x: 0.13, y: 0.13, z: 0.13}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2210506904286730264}

@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 public class NPCBattleTrigger : MonoBehaviour
 {
     public string enemyId = "ScarecrowEnemy001";
-    public string battleSceneName = "BattleScene";
     public float triggerDistance = 2f;
     public float returnDistance = 5f;
     public Transform center;
@@ -43,7 +42,6 @@ public class NPCBattleTrigger : MonoBehaviour
 
     void FindPlayer()
     {
-        // Hanapin lang ang player kung may tag na "Player" at active
         GameObject p = GameObject.FindWithTag("Player");
         if (p != null && p.activeInHierarchy)
         {
@@ -51,7 +49,6 @@ public class NPCBattleTrigger : MonoBehaviour
             return;
         }
 
-        // Fallback: hanapin sa pamamagitan ng pangalan kung sakaling magulo ang tag
         p = GameObject.Find("player_entityy");
         if (p != null && p.activeInHierarchy)
         {
@@ -69,7 +66,6 @@ public class NPCBattleTrigger : MonoBehaviour
         diff.y = 0;
         if (diff.magnitude > triggerDistance) return;
 
-        // I-double check kung defeated na talaga (para sa mga nag-reload)
         if (BattleTransfer.defeated.Contains(Key()))
         {
             gameObject.SetActive(false);
@@ -83,13 +79,17 @@ public class NPCBattleTrigger : MonoBehaviour
         Vector3 back = Origin() + dir * returnDistance;
         back.y = player.position.y;
 
+        // KUNIN ANG TAMANG BATTLE SCENE MULA SA DATABASE
+        EnemyData enemyData = EnemyDatabase.Get(enemyId);
+
         BattleTransfer.enemyId = enemyId;
         BattleTransfer.enemyKey = Key();
         BattleTransfer.explorationScene = SceneManager.GetActiveScene().name;
         BattleTransfer.playerReturnPosition = back;
         BattleTransfer.hasReturnPosition = true;
 
-        SceneManager.LoadScene(battleSceneName);
+        // Dito natin gagamitin ang battleSceneName mula sa database
+        SceneManager.LoadScene(enemyData.battleSceneName);
     }
 
     void OnDrawGizmosSelected()

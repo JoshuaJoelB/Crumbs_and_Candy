@@ -203,6 +203,75 @@ public static class PlayerCardData
     }
 
     // =========================================================================
+    // CARD UPGRADE SYSTEM (BLACKSMITH)
+    // =========================================================================
+
+    /// <summary>
+    /// Checks whether an owned card can be upgraded to the next level.
+    /// Returns true only if player owns the card and current level is less than max level.
+    /// </summary>
+    public static bool CanUpgradeCard(string cardId)
+    {
+        EnsureInitialized();
+        if (string.IsNullOrEmpty(cardId) || !ownedCards.ContainsKey(cardId)) return false;
+        PlayerCardEntry entry = ownedCards[cardId];
+        if (entry == null || entry.CardInfo == null) return false;
+        return entry.level < entry.MaxLevel;
+    }
+
+    /// <summary>
+    /// Returns all upgradeable cards currently owned by the player.
+    /// </summary>
+    public static List<PlayerCardEntry> GetUpgradeableCards()
+    {
+        EnsureInitialized();
+        List<PlayerCardEntry> list = new List<PlayerCardEntry>();
+        foreach (var entry in ownedCards.Values)
+        {
+            if (entry != null && entry.CardInfo != null && entry.level < entry.MaxLevel)
+            {
+                list.Add(entry);
+            }
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// Upgrades an owned card by 1 level by spending coins.
+    /// Deducts coins only on success and prevents duplicating the card.
+    /// </summary>
+    public static bool UpgradeCard(string cardId, int coinCost)
+    {
+        EnsureInitialized();
+
+        if (!CanUpgradeCard(cardId))
+        {
+            Debug.LogWarning($"[PlayerCardData] Cannot upgrade card {cardId}. Not owned or already at max level.");
+            return false;
+        }
+
+        if (PlayerProfile.coins < coinCost)
+        {
+            Debug.LogWarning($"[PlayerCardData] Insufficient coins to upgrade {cardId}. Needed: {coinCost}, Current: {PlayerProfile.coins}");
+            return false;
+        }
+
+        // Deduct coins and persist player stats
+        PlayerProfile.coins -= coinCost;
+        PlayerProfile.Save();
+
+        // Increment card level safely without duplicating
+        PlayerCardEntry entry = ownedCards[cardId];
+        entry.level = Mathf.Min(entry.level + 1, entry.MaxLevel);
+
+        Save();
+
+        OnCardDataChanged?.Invoke();
+        Debug.Log($"[PlayerCardData] Successfully upgraded {cardId} ({entry.CardName}) to Level {entry.level}. Remaining Coins: {PlayerProfile.coins}");
+        return true;
+    }
+
+    // =========================================================================
     // 2. CARD INVENTORY & IDENTIFICATION
     // =========================================================================
 
@@ -210,6 +279,11 @@ public static class PlayerCardData
     {
         EnsureInitialized();
         return !string.IsNullOrEmpty(cardId) && ownedCards.ContainsKey(cardId);
+    }
+
+    public static bool OwnsCard(string cardId)
+    {
+        return HasCard(cardId);
     }
 
     public static int GetCardLevel(string cardId)

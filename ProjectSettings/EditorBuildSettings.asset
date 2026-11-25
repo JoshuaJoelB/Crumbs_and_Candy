@@ -36,6 +36,9 @@ EditorBuildSettings:
     path: Assets/Assets/Scenes/ExplorationScene.unity
     guid: 9562a529c682cee449c6472c6ba45a7f
   - enabled: 1
+    path: Assets/Assets/Scenes/Warewolf.unity
+    guid: 99678897984adea43ae5509ad97668a1
+  - enabled: 1
     path: Assets/Assets/Scenes/BattleScene/ScarecrowBattleScene.unity
     guid: 8f3a7c575320a1947b6b262f3b236652
   - enabled: 1

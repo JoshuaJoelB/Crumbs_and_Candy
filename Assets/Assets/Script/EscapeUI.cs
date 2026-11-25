@@ -7,49 +7,52 @@ public class EscapeUI : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject escapePanel;
-    public TMP_Text titleText;       // "ESCAPE"
-    public TMP_Text descriptionText; // Yung description
+    public TMP_Text titleText;
+    public TMP_Text descriptionText;
     
     [Header("Buttons")]
-    public Button playAgainButton;   // Babalik sa Main Menu
-    public Button quitButton;        // Magsasara ng laro
+    public Button playAgainButton;
+    public Button quitButton;
 
     void Start()
     {
         if (escapePanel != null) escapePanel.SetActive(false);
-
-        // I-setup ang buttons
         if (playAgainButton != null) playAgainButton.onClick.AddListener(OnPlayAgainClicked);
         if (quitButton != null) quitButton.onClick.AddListener(OnQuitClicked);
+        
+        Debug.Log("[EscapeUI] Script Started and Ready.");
     }
 
-    // Tatawagin natin ito pagkatapos matalo si Witch
     public void ShowEscapeScreen()
     {
-        if (titleText != null) 
-            titleText.text = "ESCAPE";
-
-        if (descriptionText != null)
-            descriptionText.text = "Successfully escape!\nYou successfully defeat the witch and find your way out to the forest.";
-
-        if (escapePanel != null) 
-            escapePanel.SetActive(true);
+        Debug.Log("[EscapeUI] ShowEscapeScreen() was called!");
         
-        // Siguraduhing kita ang mouse
+        if (titleText != null) titleText.text = "ESCAPE";
+        if (descriptionText != null) descriptionText.text = "Successfully escape!\nYou successfully defeat the witch and find your way out to the forest.";
+        
+        if (escapePanel != null) 
+        {
+            escapePanel.SetActive(true);
+            Debug.Log("[EscapeUI] Escape Panel is now ACTIVE.");
+        }
+        else
+        {
+            Debug.LogError("[EscapeUI] ERROR: escapePanel is NULL! Check the Inspector.");
+        }
+        
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    void OnPlayAgainClicked()
-    {
-        // Babalik sa Main Menu
-        SceneManager.LoadScene("MainMenu");
+    void OnPlayAgainClicked() 
+    { 
+        Debug.Log("[EscapeUI] Play Again Clicked. Loading Main Menu...");
+        SceneManager.LoadScene("MainMenu"); 
     }
-
-    void OnQuitClicked()
-    {
-        // Magsasara ang laro
-        Debug.Log("Quitting Game...");
-        Application.Quit();
+    
+    void OnQuitClicked() 
+    { 
+        Debug.Log("[EscapeUI] Quit Clicked. Quitting Game...");
+        Application.Quit(); 
     }
 }

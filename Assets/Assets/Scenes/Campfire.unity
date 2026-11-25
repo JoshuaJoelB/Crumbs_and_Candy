@@ -358,6 +358,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6066957811460393317, guid: 0c009f543c007e24db07b108d6a52f48, type: 3}
+      propertyPath: prompt
+      value: 
+      objectReference: {fileID: 1285800178}
+    - target: {fileID: 6066957811460393317, guid: 0c009f543c007e24db07b108d6a52f48, type: 3}
       propertyPath: sceneIndex
       value: 7
       objectReference: {fileID: 0}
@@ -780,6 +784,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &1285800178 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5600277604270180431, guid: b8af80f7ecb168d498cb072120f3948b, type: 3}
+  m_PrefabInstance: {fileID: 1393367581}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1323018740 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9147481974756281230, guid: d12f99a0e5737d14f9b63d10aeae7912, type: 3}
@@ -2640,6 +2649,7 @@ GameObject:
   - component: {fileID: 1729776008587735212}
   - component: {fileID: 6697621763389672864}
   - component: {fileID: 882129737347990199}
+  - component: {fileID: 6697621763389672865}
   m_Layer: 0
   m_Name: Plane.001
   m_TagString: Untagged
@@ -3075,6 +3085,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5148817235856686821}
+  m_Mesh: {fileID: 4579454407841743219, guid: b2bb9e8770bb90b4f90bb1232803e731, type: 3}
+--- !u!64 &6697621763389672865
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5148817235856686821}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4579454407841743219, guid: b2bb9e8770bb90b4f90bb1232803e731, type: 3}
 --- !u!4 &6758227914800889528
 Transform:

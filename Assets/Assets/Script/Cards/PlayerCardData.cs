@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Source where a card was acquired by the player.
-/// </summary>
 public enum CardAcquisitionSource
 {
     InitialDeck,
@@ -13,10 +10,6 @@ public enum CardAcquisitionSource
     RandomChest
 }
 
-/// <summary>
-/// Stores player ownership data for a single card.
-/// Does not store duplicate descriptions or effects, referencing General Card Data (CardDatabase) dynamically.
-/// </summary>
 [Serializable]
 public class PlayerCardEntry
 {

@@ -750,7 +750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4867c52f01f9144bbef4f147e650bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorExit
-  sceneIndex: 6
+  sceneIndex: 5
   prompt: {fileID: 650586975}
 --- !u!1001 &1203662122
 PrefabInstance:
@@ -1434,7 +1434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4867c52f01f9144bbef4f147e650bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorExit
-  sceneIndex: 7
+  sceneIndex: 4
   prompt: {fileID: 650586975}
 --- !u!64 &1531537332
 MeshCollider:

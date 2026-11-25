@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Bridge interface to PlayerCardData for backwards-compatibility with existing battle and reward systems.
-/// Delegates all storage, retrieval, and acquisition to the Player Card Data system.
-/// </summary>
+
 public static class CardCollection
 {
     public static List<string> GetOwnedCards()

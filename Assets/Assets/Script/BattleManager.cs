@@ -16,7 +16,7 @@ public class BattleManager : MonoBehaviour
     
     [Header("Card UI (Drag these from Hierarchy)")]
     public Transform handContainer;    
-    public CardUI cardPrefab;          // Fallback prefab
+    public CardUI cardPrefab;
     public TMP_Text deckCountText;     
     public TMP_Text discardCountText;  
     public Button endTurnButton;
@@ -24,7 +24,7 @@ public class BattleManager : MonoBehaviour
     [Header("Text & Bars")]
     public TMP_Text playerStatsText;
     public TMP_Text enemyStatsText;
-    public TMP_Text enemyArmorText; 
+    public TMP_Text enemyArmorText;
     public TMP_Text turnIndicatorText; 
 
     public StatBar playerHpBar;
@@ -34,12 +34,13 @@ public class BattleManager : MonoBehaviour
 
     [Header("Damage Popups")]
     public DamagePopup damagePopupPrefab;
-    public RectTransform playerPopupPos; // UI Anchor kung saan lalabas ang damage ng Player
-    public RectTransform enemyPopupPos;  // UI Anchor kung saan lalabas ang damage ng Enemy
+    public RectTransform playerPopupPos; 
+    public RectTransform enemyPopupPos;  
 
     [Header("Victory / Defeat UI")]
     public VictoryRewardUI victoryUI;
     public DefeatUI defeatUI;
+    public EscapeUI escapeUI;
 
     Combatant player, enemy;
     EnemyData enemyData;
@@ -53,7 +54,6 @@ public class BattleManager : MonoBehaviour
     bool lastVictory;
     private CardInstance previewedEnemyCard;
 
-    // --- VARIABLES TO TRACK INSPECTOR CHANGES ---
     private int lastSyncedHand = -1;
     private int lastSyncedDraw = -1;
     private int lastSyncedDiscard = -1;
@@ -151,10 +151,9 @@ public class BattleManager : MonoBehaviour
         if (state != State.Inactive) return false;
         enemyData = EnemyDatabase.Get(enemyId);
 
-        // Player Deck from PlayerCardData system
         startingDeck = PlayerCardData.GetDeckCardInstances();
         
-        if (startingDeck.Count == 0) // Fallback
+        if (startingDeck.Count == 0)
         {
             startingDeck.Add(new CardInstance(CardDatabase.Get("BASIC-001")));
             startingDeck.Add(new CardInstance(CardDatabase.Get("BASIC-001")));
@@ -244,18 +243,15 @@ public class BattleManager : MonoBehaviour
             case CardEffectType.ArmorAndDraw: player.armor += v; if (s > 0) flow.Draw(s); break;
         }
 
-        // MAG-SPAWN NG DAMAGE POPUP SA ENEMY POSITION
         if (damageDealt > 0)
-        {
             SpawnDamagePopup(damageDealt, enemyPopupPos);
-        }
     }
 
     void OnEndTurnClicked()
     {
         if (state != State.PlayerTurn) return;
         flow.PurgeJunkFromHand();
-        flow.EnforceHandLimit(3); // 3 card limit
+        flow.EnforceHandLimit(3);
         state = State.EnemyTurn;
         Refresh();
         StartCoroutine(EnemyTurn());
@@ -386,11 +382,8 @@ public class BattleManager : MonoBehaviour
                 break;
         }
 
-        // MAG-SPAWN NG DAMAGE POPUP SA PLAYER POSITION
         if (damageDealt > 0)
-        {
             SpawnDamagePopup(damageDealt, playerPopupPos);
-        }
     }
 
     void EndBattle(bool victory)
@@ -401,6 +394,23 @@ public class BattleManager : MonoBehaviour
 
         if (victory)
         {
+            // KUNG SI WITCH ANG KALABAN
+            if (enemyData.id == "WitchEnemy005" || enemyData.enemyName.Contains("Witch"))
+            {
+                battlePanel.SetActive(false);
+                
+                if (escapeUI != null)
+                {
+                    escapeUI.ShowEscapeScreen();
+                }
+                else
+                {
+                    Debug.LogError("Escape UI is not assigned sa BattleManager Inspector!");
+                }
+                return;
+            }
+
+            // NORMAL VICTORY
             PlayerProfile.AddReward(enemyData.xpReward, enemyData.coinReward);
             string rewardCardId = GetRandomClassCard();
 
@@ -417,6 +427,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            // DEFEAT
             if (defeatUI != null)
             {
                 battlePanel.SetActive(false);
@@ -448,19 +459,13 @@ public class BattleManager : MonoBehaviour
         SceneManager.LoadScene(BattleTransfer.explorationScene);
     }
 
-    // BAGONG SPAWN LOGIC PARA SA UI ANCHORS
     void SpawnDamagePopup(int damage, RectTransform spawnPos)
     {
         if (damagePopupPrefab != null && spawnPos != null)
         {
             DamagePopup popup = Instantiate(damagePopupPrefab, spawnPos.position, Quaternion.identity);
-            
-            // Gawing anak ng Canvas para mag-pwesto nang tama
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false); 
-            
-            // I-set ang position gamit ang UI RectTransform position
             popup.GetComponent<RectTransform>().position = spawnPos.position;
-
             bool isPlayer = (spawnPos == playerPopupPos);
             popup.Setup(damage, isPlayer);
         }
@@ -495,22 +500,15 @@ public class BattleManager : MonoBehaviour
         }
 
         if (playerStatsText != null) playerStatsText.text = $"PLAYER Lv {PlayerProfile.level}\nArmor {player.armor}\nXP {PlayerProfile.xp}/{PlayerProfile.XpToNext}\nCoins {PlayerProfile.coins}";
-        if (enemyStatsText != null) 
-            enemyStatsText.text = $"{enemyData.enemyName} ({enemyData.difficulty})";
-
-        //ARMOR
-        if (enemyArmorText != null)
+        
+        if (enemyStatsText != null)
         {
             if (enemy.armor > 0)
-            {
-                enemyArmorText.text = "Armor: " + enemy.armor;
-                enemyArmorText.gameObject.SetActive(true); // Ipakita kung may armor
-            }
+                enemyStatsText.text = $"{enemyData.enemyName}\n{enemyData.difficulty} | Armor: {enemy.armor}";
             else
-            {
-                enemyArmorText.gameObject.SetActive(false); // Itago kung 0 armor
-            }
+                enemyStatsText.text = $"{enemyData.enemyName}\n{enemyData.difficulty}";
         }
+
         if (turnIndicatorText != null) turnIndicatorText.text = (state == State.PlayerTurn) ? "Player Turn" : "Enemy Turn";
 
         if (deckCountText != null) deckCountText.text = "Draw: " + flow.deck.Count;

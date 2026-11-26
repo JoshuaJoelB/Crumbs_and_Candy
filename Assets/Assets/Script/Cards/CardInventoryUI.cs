@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// UI component for viewing the player's acquired card collection and managing active deck cards.
-/// Dynamically spawns card UI prefabs using CardPrefabManager and retrieves card data from PlayerCardData.
-/// </summary>
+
 public class CardInventoryUI : MonoBehaviour
 {
     [Header("UI Containers")]
@@ -40,9 +37,7 @@ public class CardInventoryUI : MonoBehaviour
         if (inventoryPanel != null) inventoryPanel.SetActive(false);
     }
 
-    /// <summary>
-    /// Refreshes the list of cards displayed in the inventory panel.
-    /// </summary>
+ 
     public void RefreshInventory()
     {
         ClearSpawnedCards();

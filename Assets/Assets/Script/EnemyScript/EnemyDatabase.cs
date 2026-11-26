@@ -39,7 +39,7 @@ public static class EnemyDatabase
         Add(new EnemyData(
             "PorcelainDollEnemy004", "Porcelain Doll", "Elite",
             "PorcelainDollBattleScene", // <-- BATTLE SCENE
-            95, 20, 10, 35, 18,
+            50, 20, 10, 35, 18,
             "PD-001",
             new List<EnemyCardEntry> {
                 new EnemyCardEntry("BASIC-001", 1, 2), new EnemyCardEntry("ENEMY-ATTACK-001", 2, 4), new EnemyCardEntry("BASIC-003", 1, 2)

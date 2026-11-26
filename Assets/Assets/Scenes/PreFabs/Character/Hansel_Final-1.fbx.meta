@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 42dcc3131b0bffd40bb6f4c378ec6e35
+guid: 22c9e12a9b3ac9b48bf36ca085dd558f
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
@@ -14,7 +14,7 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
-    optimizeGameObjects: 0
+    optimizeGameObjects: 1
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
@@ -28,7 +28,8 @@ ModelImporter:
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
-    extraExposedTransformPaths: []
+    extraExposedTransformPaths:
+    - Armature
     extraUserProperties: []
     clipAnimations: []
     isReadable: 0

@@ -14,19 +14,19 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.101
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 5.8
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
+  m_SkyboxMaterial: {fileID: 2100000, guid: a64ebaacc9611ca40bf9076e407f766d, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: b672bf66c2429d5428b634f958816f97, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1503,75 +1503,99 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDataViewer
   playerProfile:
-    level: 3
-    xp: 97
-    xpToNext: 150
-    coins: 121
-    maxHp: 120
-  totalOwnedCards: 9
-  totalUpgradedCards: 0
-  maxLevelCards: 0
+    level: 8
+    xp: 140
+    xpToNext: 400
+    coins: 560
+    maxHp: 170
+  totalOwnedCards: 8
+  totalUpgradedCards: 5
+  maxLevelCards: 4
   ownedCards:
-  - cardDisplayName: '[Level 1] Basic Attack (BASIC-001)'
+  - cardDisplayName: '[Level 3] Basic Attack (BASIC-001) [MAX LEVEL]'
     cardId: BASIC-001
     cardName: Basic Attack
-    level: 1
+    level: 3
     maxLevel: 3
-    isUpgraded: 0
-    isMaxLevel: 0
+    isUpgraded: 1
+    isMaxLevel: 1
     cardClass: 0
-    quantity: 1
+    quantity: 4
     cost: 0
     acquiredFrom: 0
     description: Deal {value} physical damage.
-  - cardDisplayName: '[Level 1] Basic Guard (BASIC-002)'
+  - cardDisplayName: '[Level 3] Basic Guard (BASIC-002) [MAX LEVEL]'
     cardId: BASIC-002
     cardName: Basic Guard
-    level: 1
+    level: 3
     maxLevel: 3
-    isUpgraded: 0
-    isMaxLevel: 0
+    isUpgraded: 1
+    isMaxLevel: 1
     cardClass: 0
     quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Gain {value} armor.
-  - cardDisplayName: '[Level 1] Basic Mana (BASIC-003)'
+  - cardDisplayName: '[Level 2] Basic Mana (BASIC-003) [UPGRADED +1]'
     cardId: BASIC-003
     cardName: Basic Mana
-    level: 1
+    level: 2
     maxLevel: 3
-    isUpgraded: 0
+    isUpgraded: 1
     isMaxLevel: 0
     cardClass: 0
     quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Restore {value} mana.
-  - cardDisplayName: '[Level 1] Heavy Attack (NOR-001)'
+  - cardDisplayName: '[Level 2] Heavy Attack (NOR-001) [MAX LEVEL]'
     cardId: NOR-001
     cardName: Heavy Attack
+    level: 2
+    maxLevel: 2
+    isUpgraded: 1
+    isMaxLevel: 1
+    cardClass: 1
+    quantity: 2
+    cost: 2
+    acquiredFrom: 0
+    description: Deal {value} physical damage.
+  - cardDisplayName: '[Level 1] Basic Guard (NOR-002)'
+    cardId: NOR-002
+    cardName: Basic Guard
     level: 1
     maxLevel: 2
     isUpgraded: 0
     isMaxLevel: 0
     cardClass: 1
-    quantity: 3
+    quantity: 1
+    cost: 1
+    acquiredFrom: 2
+    description: Gain {value} armor.
+  - cardDisplayName: '[Level 2] Fireball (MAG-001) [MAX LEVEL]'
+    cardId: MAG-001
+    cardName: Fireball
+    level: 2
+    maxLevel: 2
+    isUpgraded: 1
+    isMaxLevel: 1
+    cardClass: 3
+    quantity: 1
     cost: 2
     acquiredFrom: 2
-    description: Deal {value} physical damage.
-  - cardDisplayName: '[Level 1] Frost Bind (MAG-002)'
-    cardId: MAG-002
-    cardName: Frost Bind
+    description: Deal {value} magic damage.
+  - cardDisplayName: '[Level 1] Prankster (TRI-002)'
+    cardId: TRI-002
+    cardName: Prankster
     level: 1
     maxLevel: 2
     isUpgraded: 0
     isMaxLevel: 0
-    cardClass: 3
-    quantity: 2
-    cost: 2
-    acquiredFrom: 2
-    description: Deal {value} magic damage. Reduce next attack by {secondary}.
+    cardClass: 4
+    quantity: 1
+    cost: 1
+    acquiredFrom: 1
+    description: Add {value} Junk Card(s) to opponent's deck.
   - cardDisplayName: '[Level 1] Counter (TRI-001)'
     cardId: TRI-001
     cardName: Counter
@@ -1582,106 +1606,42 @@ MonoBehaviour:
     cardClass: 4
     quantity: 1
     cost: 2
-    acquiredFrom: 2
+    acquiredFrom: 1
     description: Counter next attack. Draw {value} card(s).
-  - cardDisplayName: '[Level 1] Fireball (MAG-001)'
-    cardId: MAG-001
-    cardName: Fireball
-    level: 1
-    maxLevel: 2
-    isUpgraded: 0
-    isMaxLevel: 0
-    cardClass: 3
-    quantity: 2
-    cost: 2
-    acquiredFrom: 2
-    description: Deal {value} magic damage.
-  - cardDisplayName: '[Level 1] Basic Guard (NOR-002)'
-    cardId: NOR-002
-    cardName: Basic Guard
-    level: 1
-    maxLevel: 2
-    isUpgraded: 0
-    isMaxLevel: 0
-    cardClass: 1
-    quantity: 4
-    cost: 1
-    acquiredFrom: 2
-    description: Gain {value} armor.
-  - cardDisplayName: '[Level 1] Prankster (TRI-002)'
-    cardId: TRI-002
-    cardName: Prankster
-    level: 1
-    maxLevel: 2
-    isUpgraded: 0
-    isMaxLevel: 0
-    cardClass: 4
-    quantity: 2
-    cost: 1
-    acquiredFrom: 2
-    description: Add {value} Junk Card(s) to opponent's deck.
   activeDeck:
-  - '[Level 1] Basic Attack (BASIC-001)'
-  - '[Level 1] Basic Guard (BASIC-002)'
-  - '[Level 1] Basic Mana (BASIC-003)'
-  - '[Level 1] Heavy Attack (NOR-001)'
-  - '[Level 1] Frost Bind (MAG-002)'
-  - '[Level 1] Counter (TRI-001)'
-  - '[Level 1] Fireball (MAG-001)'
+  - '[Level 3] Basic Attack (BASIC-001) [MAX]'
+  - '[Level 3] Basic Guard (BASIC-002) [MAX]'
+  - '[Level 2] Basic Mana (BASIC-003) [UPGRADED +1]'
+  - '[Level 2] Heavy Attack (NOR-001) [MAX]'
   - '[Level 1] Basic Guard (NOR-002)'
+  - '[Level 2] Fireball (MAG-001) [MAX]'
   - '[Level 1] Prankster (TRI-002)'
+  - '[Level 1] Counter (TRI-001)'
   acquisitionHistory:
+  - cardId: NOR-001
+    source: 1
+    timestamp: 2026-11-23 13:54:48
+  - cardId: NOR-002
+    source: 2
+    timestamp: 2026-11-23 14:07:34
+  - cardId: BASIC-001
+    source: 1
+    timestamp: 2026-11-24 05:16:33
+  - cardId: MAG-001
+    source: 2
+    timestamp: 2026-11-24 12:30:26
   - cardId: BASIC-001
     source: 0
-    timestamp: 2026-11-25 01:39:31
-  - cardId: BASIC-002
-    source: 0
-    timestamp: 2026-11-25 01:39:31
-  - cardId: BASIC-003
-    source: 0
-    timestamp: 2026-11-25 01:39:31
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-25 01:53:27
-  - cardId: MAG-002
-    source: 2
-    timestamp: 2026-11-25 02:11:39
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-25 02:25:21
+    timestamp: 2026-11-24 18:16:59
+  - cardId: BASIC-001
+    source: 1
+    timestamp: 2026-11-24 18:17:08
+  - cardId: TRI-002
+    source: 1
+    timestamp: 2026-11-24 18:33:08
   - cardId: TRI-001
-    source: 2
-    timestamp: 2026-11-25 02:40:02
-  - cardId: MAG-001
-    source: 2
-    timestamp: 2026-11-25 02:40:56
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-25 02:48:24
-  - cardId: NOR-001
-    source: 2
-    timestamp: 2026-11-25 02:50:24
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-25 03:01:25
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-25 03:04:05
-  - cardId: MAG-001
-    source: 2
-    timestamp: 2026-11-25 03:04:48
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-25 03:06:31
-  - cardId: TRI-002
-    source: 2
-    timestamp: 2026-11-25 03:09:03
-  - cardId: TRI-002
-    source: 2
-    timestamp: 2026-11-25 03:14:23
-  - cardId: MAG-002
-    source: 2
-    timestamp: 2026-11-25 03:15:00
+    source: 1
+    timestamp: 2026-11-24 18:44:34
   shopCurrentOfferings:
   - '[Shop is CLOSED]'
   - "Heavy Attack (NOR-001) \u2014 20 coins [OWNED]"
@@ -1689,7 +1649,7 @@ MonoBehaviour:
   - "Parry (WAR-001) \u2014 10 coins"
   - "Pierce (WAR-002) \u2014 20 coins"
   - "Fireball (MAG-001) \u2014 20 coins [OWNED]"
-  - "Frost Bind (MAG-002) \u2014 20 coins [OWNED]"
+  - "Frost Bind (MAG-002) \u2014 20 coins"
   - "Counter (TRI-001) \u2014 20 coins [OWNED]"
   - "Prankster (TRI-002) \u2014 10 coins [OWNED]"
   - "Bloodthirst (BER-001) \u2014 20 coins"
@@ -4350,21 +4310,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4452100669950917091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &460952442756193708
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752797186160953413}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.8, y: 216.9, z: -42.6}
-  m_LocalScale: {x: 72.750084, y: 72.750084, z: 72.750084}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4452100669950917091}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &466253509182633580
 Transform:
   m_ObjectHideFlags: 0
@@ -4772,71 +4717,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &752797186160953413
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 460952442756193708}
-  - component: {fileID: 5432030882593681100}
-  - component: {fileID: 1072148992077761387}
-  m_Layer: 0
-  m_Name: Spot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &754041836564071293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759391697286112766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_CustomShadowLayers: 0
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
-  m_RenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_ShadowRenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_Version: 4
-  m_LightLayerMask: 1
-  m_ShadowLayerMask: 1
-  m_RenderingLayers: 1
-  m_ShadowRenderingLayers: 1
---- !u!1 &759391697286112766
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3475287923235325179}
-  - component: {fileID: 2098403001193457500}
-  - component: {fileID: 754041836564071293}
-  m_Layer: 0
-  m_Name: Sun.001
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!33 &761659715942538705
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5141,35 +5021,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1072148992077761387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752797186160953413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_CustomShadowLayers: 0
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
-  m_RenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_ShadowRenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_Version: 4
-  m_LightLayerMask: 1
-  m_ShadowLayerMask: 1
-  m_RenderingLayers: 1
-  m_ShadowRenderingLayers: 1
 --- !u!1 &1107246532087629433
 GameObject:
   m_ObjectHideFlags: 0
@@ -6882,71 +6733,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!108 &1968873215044826781
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6301900160061406562}
-  m_Enabled: 1
-  serializedVersion: 13
-  m_Type: 1
-  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  m_Intensity: 1
-  m_Range: 10
-  m_SpotAngle: 45
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize2D: {x: 0.5, y: 0.5}
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ForceVisible: 0
-  m_ShapeRadius: 0.025
-  m_ShadowAngle: 0
-  m_LightUnit: 1
-  m_LuxAtDistance: 1
-  m_EnableSpotReflector: 1
 --- !u!23 &1972348338793490994
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7171,71 +6957,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4452100669950917091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &2098403001193457500
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759391697286112766}
-  m_Enabled: 1
-  serializedVersion: 13
-  m_Type: 1
-  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-  m_Intensity: 1
-  m_Range: 10
-  m_SpotAngle: 45
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize2D: {x: 0.5, y: 0.5}
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ForceVisible: 0
-  m_ShapeRadius: 0.025
-  m_ShadowAngle: 0
-  m_LightUnit: 1
-  m_LuxAtDistance: 1
-  m_EnableSpotReflector: 1
 --- !u!23 &2106969592037635523
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9689,21 +9410,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4452100669950917091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &3475287923235325179
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759391697286112766}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -334.6273, y: 142.91034, z: -80.41745}
-  m_LocalScale: {x: 72.750084, y: 72.750084, z: 72.750084}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4452100669950917091}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3487804660461635696
 GameObject:
   m_ObjectHideFlags: 0
@@ -11618,9 +11324,6 @@ Transform:
   - {fileID: 9091787084802456124}
   - {fileID: 2468771497057039190}
   - {fileID: 5828845044614333691}
-  - {fileID: 460952442756193708}
-  - {fileID: 5024024217652443135}
-  - {fileID: 3475287923235325179}
   - {fileID: 7944085257116183073}
   - {fileID: 1229694000022192346}
   - {fileID: 670503891130258958}
@@ -12867,21 +12570,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5024024217652443135
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6301900160061406562}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -229.3, y: 180.91032, z: -53.417446}
-  m_LocalScale: {x: 72.750084, y: 72.750084, z: 72.750084}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4452100669950917091}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &5039215374943786991
 Transform:
   m_ObjectHideFlags: 0
@@ -13462,71 +13150,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4452100669950917091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &5432030882593681100
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752797186160953413}
-  m_Enabled: 1
-  serializedVersion: 13
-  m_Type: 0
-  m_Color: {r: 0.8998358, g: 0.47198904, b: 0.20646836, a: 1}
-  m_Intensity: 212711.06
-  m_Range: 8.374769
-  m_SpotAngle: 45
-  m_InnerSpotAngle: 0
-  m_CookieSize2D: {x: 0.5, y: 0.5}
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ForceVisible: 0
-  m_ShapeRadius: 0.025
-  m_ShadowAngle: 0
-  m_LightUnit: 1
-  m_LuxAtDistance: 1
-  m_EnableSpotReflector: 1
 --- !u!4 &5514950772816335673
 Transform:
   m_ObjectHideFlags: 0
@@ -15209,24 +14832,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6428519310439960962, guid: 3280cf51169d3b94c9521168748959c2, type: 3}
---- !u!1 &6301900160061406562
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5024024217652443135}
-  - component: {fileID: 1968873215044826781}
-  - component: {fileID: 8347493073196143565}
-  m_Layer: 0
-  m_Name: Sun
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &6315070665176334652
 GameObject:
   m_ObjectHideFlags: 0
@@ -18575,35 +18180,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4452100669950917091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8347493073196143565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6301900160061406562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_CustomShadowLayers: 0
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
-  m_RenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_ShadowRenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_Version: 4
-  m_LightLayerMask: 1
-  m_ShadowLayerMask: 1
-  m_RenderingLayers: 1
-  m_ShadowRenderingLayers: 1
 --- !u!33 &8360228569678652272
 MeshFilter:
   m_ObjectHideFlags: 0

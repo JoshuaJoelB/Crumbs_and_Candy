@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class DoorExit : MonoBehaviour
 {
+    [Header("Settings")]
     [SerializeField] private int sceneIndex = 1;
     [SerializeField] private GameObject prompt;
 
@@ -26,43 +27,33 @@ public class DoorExit : MonoBehaviour
         if (!playerNearby || isTransitioning)
             return;
 
+        // Check if Spacebar is pressed
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             isTransitioning = true;
-
-            //Debug.Log("E pressed. Loading scene index: " + sceneIndex);
-
             SceneManager.LoadScene(sceneIndex);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player"))
-            return;
-
-        playerNearby = true;
-
-        //Debug.Log("Player entered door trigger.");
-
-        if (prompt != null)
+        // Check if the object entering the trigger has a CharacterController
+        // We use GetComponentInParent just in case the CharacterController is on a parent object
+        if (other.GetComponent<CharacterController>() != null || other.GetComponentInParent<CharacterController>() != null)
         {
-            prompt.SetActive(true);
+            playerNearby = true;
+            if (prompt != null) prompt.SetActive(true);
+            Debug.Log("Player (Character Controller) entered the trigger zone!");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Player"))
-            return;
-
-        playerNearby = false;
-
-        //Debug.Log("Player exited door trigger.");
-
-        if (prompt != null)
+        if (other.GetComponent<CharacterController>() != null || other.GetComponentInParent<CharacterController>() != null)
         {
-            prompt.SetActive(false);
+            playerNearby = false;
+            if (prompt != null) prompt.SetActive(false);
+            Debug.Log("Player (Character Controller) left the trigger zone.");
         }
     }
 }

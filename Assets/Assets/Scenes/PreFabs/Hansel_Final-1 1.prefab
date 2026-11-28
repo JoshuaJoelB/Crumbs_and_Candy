@@ -145,8 +145,8 @@ MonoBehaviour:
   moveSpeed: 2
   gravity: -9.81
   mouseSensitivity: 2
-  smoothRotation: 0
-  rotationSmoothTime: 0.05
+  smoothRotation: 1
+  rotationSmoothTime: 0.12
   autoLockCursor: 1
 --- !u!1 &5037148401620838103
 GameObject:

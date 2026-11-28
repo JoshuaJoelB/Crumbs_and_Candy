@@ -117,6 +117,9 @@ public class ShopManager : MonoBehaviour
         if (isOpen) return;
         isOpen = true;
 
+        PlayerProfile.Load();
+        PlayerCardData.EnsureInitialized();
+
         if (shopPanel != null) shopPanel.SetActive(true);
 
         // Freeze player
@@ -232,6 +235,20 @@ public class ShopManager : MonoBehaviour
         {
             Debug.LogWarning("[ShopManager] cardDisplayContainer is not assigned!");
             return;
+        }
+
+        // Ensure container has a LayoutGroup so cards don't overlap
+        if (cardDisplayContainer.GetComponent<LayoutGroup>() == null)
+        {
+            var grid = cardDisplayContainer.gameObject.AddComponent<GridLayoutGroup>();
+            grid.cellSize = new Vector2(160, 220);
+            grid.spacing = new Vector2(15, 15);
+            grid.childAlignment = TextAnchor.MiddleCenter;
+        }
+
+        if (CardPrefabManager.Instance == null)
+        {
+            CardPrefabManager.Instance = FindObjectOfType<CardPrefabManager>();
         }
 
         foreach (var shopItem in currentOfferings)
@@ -378,7 +395,7 @@ public class ShopManager : MonoBehaviour
     {
         if (coinBalanceText != null)
         {
-            coinBalanceText.text = $"{PlayerProfile.coins}";
+            coinBalanceText.text = $"Balance: {PlayerProfile.coins} Coins";
         }
     }
 

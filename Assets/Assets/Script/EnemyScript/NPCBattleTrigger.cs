@@ -3,12 +3,15 @@ using UnityEngine.SceneManagement;
 
 public class NPCBattleTrigger : MonoBehaviour
 {
+    [Header("Settings")]
     public string enemyId = "ScarecrowEnemy001";
     public float triggerDistance = 2f;
     public float returnDistance = 5f;
-    public Transform center;
 
-    Transform player;
+    [Header("Player Connection")]
+    [Tooltip("Drag your Player (Hansel_Final-1) here!")]
+    public Transform player;
+
     static bool battleLoading;
 
     public static void ResetBattleLoading()
@@ -16,7 +19,7 @@ public class NPCBattleTrigger : MonoBehaviour
         battleLoading = false;
     }
 
-    Vector3 Origin() { return center != null ? center.position : transform.position; }
+    Vector3 Origin() { return transform.position; }
 
     string Key()
     {
@@ -36,34 +39,27 @@ public class NPCBattleTrigger : MonoBehaviour
             return;
         }
 
-        FindPlayer();
-        Debug.Log($"[Trigger] {name} started. Player found: {(player != null ? player.name : "NULL")}");
-    }
-
-    void FindPlayer()
-    {
-        GameObject p = GameObject.FindWithTag("Player");
-        if (p != null && p.activeInHierarchy)
+        // If you forgot to drag the player in the Inspector, try to find it automatically
+        if (player == null)
         {
-            player = p.transform;
-            return;
-        }
-
-        p = GameObject.Find("player_entityy");
-        if (p != null && p.activeInHierarchy)
-        {
-            player = p.transform;
-            Debug.LogWarning($"[Trigger] Player found by name fallback: {p.name}. Ayusin ang tag.");
+            CharacterController cc = FindAnyObjectByType<CharacterController>();
+            if (cc != null)
+            {
+                player = cc.transform;
+            }
         }
     }
 
     void Update()
     {
         if (battleLoading) return;
-        if (player == null) { FindPlayer(); if (player == null) return; }
+        
+        // If we still don't have a player, we can't do anything
+        if (player == null) return;
 
         Vector3 diff = player.position - Origin();
-        diff.y = 0;
+        diff.y = 0; // Ignore height difference
+
         if (diff.magnitude > triggerDistance) return;
 
         if (BattleTransfer.defeated.Contains(Key()))
@@ -79,7 +75,6 @@ public class NPCBattleTrigger : MonoBehaviour
         Vector3 back = Origin() + dir * returnDistance;
         back.y = player.position.y;
 
-        // KUNIN ANG TAMANG BATTLE SCENE MULA SA DATABASE
         EnemyData enemyData = EnemyDatabase.Get(enemyId);
 
         BattleTransfer.enemyId = enemyId;
@@ -88,7 +83,7 @@ public class NPCBattleTrigger : MonoBehaviour
         BattleTransfer.playerReturnPosition = back;
         BattleTransfer.hasReturnPosition = true;
 
-        // Dito natin gagamitin ang battleSceneName mula sa database
+        // Loads the correct battle scene from your EnemyDatabase
         SceneManager.LoadScene(enemyData.battleSceneName);
     }
 

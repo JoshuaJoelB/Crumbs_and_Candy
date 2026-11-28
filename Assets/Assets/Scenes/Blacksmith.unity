@@ -1508,150 +1508,70 @@ MonoBehaviour:
     xpToNext: 400
     coins: 560
     maxHp: 170
-  totalOwnedCards: 8
-  totalUpgradedCards: 5
-  maxLevelCards: 4
+  totalOwnedCards: 3
+  totalUpgradedCards: 0
+  maxLevelCards: 0
   ownedCards:
-  - cardDisplayName: '[Level 3] Basic Attack (BASIC-001) [MAX LEVEL]'
+  - cardDisplayName: '[Level 1] Basic Attack (BASIC-001)'
     cardId: BASIC-001
     cardName: Basic Attack
-    level: 3
+    level: 1
     maxLevel: 3
-    isUpgraded: 1
-    isMaxLevel: 1
+    isUpgraded: 0
+    isMaxLevel: 0
     cardClass: 0
-    quantity: 4
+    quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Deal {value} physical damage.
-  - cardDisplayName: '[Level 3] Basic Guard (BASIC-002) [MAX LEVEL]'
+  - cardDisplayName: '[Level 1] Basic Guard (BASIC-002)'
     cardId: BASIC-002
     cardName: Basic Guard
-    level: 3
+    level: 1
     maxLevel: 3
-    isUpgraded: 1
-    isMaxLevel: 1
+    isUpgraded: 0
+    isMaxLevel: 0
     cardClass: 0
     quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Gain {value} armor.
-  - cardDisplayName: '[Level 2] Basic Mana (BASIC-003) [UPGRADED +1]'
+  - cardDisplayName: '[Level 1] Basic Mana (BASIC-003)'
     cardId: BASIC-003
     cardName: Basic Mana
-    level: 2
+    level: 1
     maxLevel: 3
-    isUpgraded: 1
+    isUpgraded: 0
     isMaxLevel: 0
     cardClass: 0
     quantity: 1
     cost: 0
     acquiredFrom: 0
     description: Restore {value} mana.
-  - cardDisplayName: '[Level 2] Heavy Attack (NOR-001) [MAX LEVEL]'
-    cardId: NOR-001
-    cardName: Heavy Attack
-    level: 2
-    maxLevel: 2
-    isUpgraded: 1
-    isMaxLevel: 1
-    cardClass: 1
-    quantity: 2
-    cost: 2
-    acquiredFrom: 0
-    description: Deal {value} physical damage.
-  - cardDisplayName: '[Level 1] Basic Guard (NOR-002)'
-    cardId: NOR-002
-    cardName: Basic Guard
-    level: 1
-    maxLevel: 2
-    isUpgraded: 0
-    isMaxLevel: 0
-    cardClass: 1
-    quantity: 1
-    cost: 1
-    acquiredFrom: 2
-    description: Gain {value} armor.
-  - cardDisplayName: '[Level 2] Fireball (MAG-001) [MAX LEVEL]'
-    cardId: MAG-001
-    cardName: Fireball
-    level: 2
-    maxLevel: 2
-    isUpgraded: 1
-    isMaxLevel: 1
-    cardClass: 3
-    quantity: 1
-    cost: 2
-    acquiredFrom: 2
-    description: Deal {value} magic damage.
-  - cardDisplayName: '[Level 1] Prankster (TRI-002)'
-    cardId: TRI-002
-    cardName: Prankster
-    level: 1
-    maxLevel: 2
-    isUpgraded: 0
-    isMaxLevel: 0
-    cardClass: 4
-    quantity: 1
-    cost: 1
-    acquiredFrom: 1
-    description: Add {value} Junk Card(s) to opponent's deck.
-  - cardDisplayName: '[Level 1] Counter (TRI-001)'
-    cardId: TRI-001
-    cardName: Counter
-    level: 1
-    maxLevel: 2
-    isUpgraded: 0
-    isMaxLevel: 0
-    cardClass: 4
-    quantity: 1
-    cost: 2
-    acquiredFrom: 1
-    description: Counter next attack. Draw {value} card(s).
   activeDeck:
-  - '[Level 3] Basic Attack (BASIC-001) [MAX]'
-  - '[Level 3] Basic Guard (BASIC-002) [MAX]'
-  - '[Level 2] Basic Mana (BASIC-003) [UPGRADED +1]'
-  - '[Level 2] Heavy Attack (NOR-001) [MAX]'
-  - '[Level 1] Basic Guard (NOR-002)'
-  - '[Level 2] Fireball (MAG-001) [MAX]'
-  - '[Level 1] Prankster (TRI-002)'
-  - '[Level 1] Counter (TRI-001)'
+  - '[Level 1] Basic Attack (BASIC-001)'
+  - '[Level 1] Basic Guard (BASIC-002)'
+  - '[Level 1] Basic Mana (BASIC-003)'
   acquisitionHistory:
-  - cardId: NOR-001
-    source: 1
-    timestamp: 2026-11-23 13:54:48
-  - cardId: NOR-002
-    source: 2
-    timestamp: 2026-11-23 14:07:34
-  - cardId: BASIC-001
-    source: 1
-    timestamp: 2026-11-24 05:16:33
-  - cardId: MAG-001
-    source: 2
-    timestamp: 2026-11-24 12:30:26
   - cardId: BASIC-001
     source: 0
-    timestamp: 2026-11-24 18:16:59
-  - cardId: BASIC-001
-    source: 1
-    timestamp: 2026-11-24 18:17:08
-  - cardId: TRI-002
-    source: 1
-    timestamp: 2026-11-24 18:33:08
-  - cardId: TRI-001
-    source: 1
-    timestamp: 2026-11-24 18:44:34
+    timestamp: 2026-11-27 01:40:53
+  - cardId: BASIC-002
+    source: 0
+    timestamp: 2026-11-27 01:40:53
+  - cardId: BASIC-003
+    source: 0
+    timestamp: 2026-11-27 01:40:53
   shopCurrentOfferings:
   - '[Shop is CLOSED]'
-  - "Heavy Attack (NOR-001) \u2014 20 coins [OWNED]"
-  - "Basic Guard (NOR-002) \u2014 10 coins [OWNED]"
+  - "Heavy Attack (NOR-001) \u2014 20 coins"
+  - "Basic Guard (NOR-002) \u2014 10 coins"
   - "Parry (WAR-001) \u2014 10 coins"
   - "Pierce (WAR-002) \u2014 20 coins"
-  - "Fireball (MAG-001) \u2014 20 coins [OWNED]"
+  - "Fireball (MAG-001) \u2014 20 coins"
   - "Frost Bind (MAG-002) \u2014 20 coins"
-  - "Counter (TRI-001) \u2014 20 coins [OWNED]"
-  - "Prankster (TRI-002) \u2014 10 coins [OWNED]"
+  - "Counter (TRI-001) \u2014 20 coins"
+  - "Prankster (TRI-002) \u2014 10 coins"
   - "Bloodthirst (BER-001) \u2014 20 coins"
   - "Rampage (BER-002) \u2014 30 coins"
   shopItemsAvailable: 10

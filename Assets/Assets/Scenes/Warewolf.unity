@@ -353,8 +353,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a3348ecf766ad9418863177a247336d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 182573099}
   m_SourcePrefab: {fileID: 100100000, guid: 1a3348ecf766ad9418863177a247336d, type: 3}
+--- !u!1 &182573098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a3348ecf766ad9418863177a247336d, type: 3}
+  m_PrefabInstance: {fileID: 182573097}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &182573099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182573098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fb91f5cc7be2b3449f703676992b42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPCBattleTrigger
+  enemyId: ScarecrowEnemy001
+  triggerDistance: 2
+  returnDistance: 5
+  player: {fileID: 1381019894}
 --- !u!1001 &505743998
 PrefabInstance:
   m_ObjectHideFlags: 0

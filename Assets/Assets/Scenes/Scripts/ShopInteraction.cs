@@ -20,6 +20,11 @@ public class ShopInteraction : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.Q))
         {
+            if (shopManager == null)
+            {
+                shopManager = FindObjectOfType<ShopManager>();
+            }
+
             if (shopManager != null)
             {
                 shopManager.OpenShop();

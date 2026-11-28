@@ -193,6 +193,9 @@ public class BlacksmithUI : MonoBehaviour
         if (isOpen) return;
         isOpen = true;
 
+        PlayerCardData.EnsureInitialized();
+        PlayerProfile.Load();
+
         FindCanvas();
         ShowCanvasUI();
 
@@ -213,6 +216,23 @@ public class BlacksmithUI : MonoBehaviour
 
         ClearSelection();
         RefreshUI();
+    }
+
+    private void Update()
+    {
+        if (isOpen)
+        {
+            bool esc = Input.GetKeyDown(KeyCode.Escape);
+            if (!esc && UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                esc = true;
+            }
+
+            if (esc)
+            {
+                CloseBlacksmith();
+            }
+        }
     }
 
     /// <summary>
@@ -270,6 +290,12 @@ public class BlacksmithUI : MonoBehaviour
                 canvasComponent.gameObject.SetActive(true);
             }
             canvasComponent.enabled = true;
+
+            // Ensure scale is not zero
+            if (canvasComponent.transform.localScale == Vector3.zero)
+            {
+                canvasComponent.transform.localScale = Vector3.one;
+            }
         }
 
         if (raycasterComponent != null)
@@ -347,16 +373,17 @@ public class BlacksmithUI : MonoBehaviour
 
         if (cardsContainer == null) return;
 
-        List<PlayerCardEntry> upgradeable = PlayerCardData.GetUpgradeableCards();
+        PlayerCardData.EnsureInitialized();
+        List<PlayerCardEntry> allOwned = PlayerCardData.GetAllAcquiredCards();
 
-        if (upgradeable.Count == 0)
+        if (allOwned.Count == 0)
         {
-            ShowStatusMessage("No upgradeable cards available. (All cards at MAX level or unowned)", Color.yellow);
+            ShowStatusMessage("No cards found in player inventory.", Color.yellow);
             if (upgradeButton != null) upgradeButton.interactable = false;
             return;
         }
 
-        foreach (var entry in upgradeable)
+        foreach (var entry in allOwned)
         {
             CardData data = entry.CardInfo;
             if (data == null) continue;
@@ -373,21 +400,30 @@ public class BlacksmithUI : MonoBehaviour
             }
         }
 
-        // Auto-select the first card if nothing is selected or if previous selection was maxed out
-        if (selectedCardEntry == null || !PlayerCardData.CanUpgradeCard(selectedCardEntry.cardId))
+        // Auto-select first upgradeable card, or first owned card
+        PlayerCardEntry bestSelect = allOwned.Find(c => PlayerCardData.CanUpgradeCard(c.cardId));
+        if (bestSelect == null && allOwned.Count > 0) bestSelect = allOwned[0];
+
+        if (selectedCardEntry == null)
         {
-            SelectCard(upgradeable[0]);
+            if (bestSelect != null) SelectCard(bestSelect);
         }
         else
         {
             // Re-fetch the updated entry from PlayerCardData
             selectedCardEntry = PlayerCardData.GetCardEntry(selectedCardEntry.cardId);
+            if (selectedCardEntry == null && bestSelect != null) selectedCardEntry = bestSelect;
             UpdatePreviewDisplay();
         }
     }
 
     private CardUI GetCardUIPrefab(CardData data)
     {
+        if (CardPrefabManager.Instance == null)
+        {
+            CardPrefabManager.Instance = FindObjectOfType<CardPrefabManager>();
+        }
+
         if (CardPrefabManager.Instance != null)
         {
             return CardPrefabManager.Instance.GetPrefab(data.cardClass, data.id);

@@ -19,6 +19,13 @@ public class ShopUI : MonoBehaviour
 
     public void OpenShop()
     {
+        ShopManager sm = FindObjectOfType<ShopManager>();
+        if (sm != null)
+        {
+            sm.OpenShop();
+            return;
+        }
+
         if (isOpen) return;
 
         isOpen = true;

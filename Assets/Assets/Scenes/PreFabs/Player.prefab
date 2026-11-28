@@ -155,9 +155,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
   gravity: -9.81
-  rotationSpeed: 180
   mouseSensitivity: 150
+  smoothRotation: 0
   rotationSmoothTime: 0.08
+  autoLockCursor: 1
 --- !u!1 &7089108015343504852
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,9 +321,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
   gravity: -9.81
-  rotationSpeed: 30
   mouseSensitivity: 0.25
+  smoothRotation: 0
   rotationSmoothTime: 0.08
+  autoLockCursor: 1
 --- !u!136 &1860144573480233983
 CapsuleCollider:
   m_ObjectHideFlags: 0
